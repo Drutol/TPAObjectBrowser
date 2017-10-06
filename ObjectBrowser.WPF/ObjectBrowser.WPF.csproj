@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\TypeToIconConverter.cs" />
     <Compile Include="Statics\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +127,18 @@
       <Project>{e1c30448-766d-4af8-bff5-8b8046cabef3}</Project>
       <Name>ObjectBrowser.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\class.jpeg" />
+    <Resource Include="Assets\enum.jpeg" />
+    <Resource Include="Assets\interface.jpeg" />
+    <Resource Include="Assets\method.jpeg" />
+    <Resource Include="Assets\namespace.jpeg" />
+    <Resource Include="Assets\prop.jpeg" />
+    <Resource Include="Assets\struct.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\asm.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

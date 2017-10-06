@@ -6,7 +6,25 @@
         xmlns:local="clr-namespace:ObjectBrowser.WPF"
         mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=BrowserViewModel}"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+    <Grid >
+        <TreeView RenderTransformOrigin="0.5,0.5" ItemsSource="{Binding Items}" Background="#2d2d2d">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Margin="4,1" Source="{Binding Kind,Converter={StaticResource TypeToIconConverter}}"/>
+                        <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Name}" Foreground="White"/>
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
     </Grid>
 </Window>

@@ -11,6 +11,10 @@ namespace ObjectBrowser.Models.Enums
         EnumType,
         StructType,
         InterfaceType,
-        ClassType
+        ClassType,
+        Namespace,
+        Assembly,
+        MethodType,
+        Property
     }
 }

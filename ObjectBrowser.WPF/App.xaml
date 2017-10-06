@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ObjectBrowser.WPF"
              xmlns:statics="clr-namespace:ObjectBrowser.WPF.Statics"
+             xmlns:converters="clr-namespace:ObjectBrowser.WPF.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <statics:ViewModelLocator x:Key="Locator"/>
+        <converters:TypeToIconConverter x:Key="TypeToIconConverter" />
     </Application.Resources>
 </Application>

@@ -66,6 +66,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statics\ResourceLocator.cs" />
     <Compile Include="ViewModels\BrowserViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\AssemblyNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\ClassNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\EnumNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\InterfaceNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\MethodNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\NamepsaceNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\NodeViewModelBase.cs" />
+    <Compile Include="ViewModels\ItemViewModels\PropertyNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\StructNodeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ObjectBrowser.Interfaces\ObjectBrowser.Interfaces.csproj">
