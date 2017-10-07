@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using ObjectBrowser.Interfaces;
 using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Shared.BL;
 using ObjectBrowser.Shared.ViewModels.ItemViewModels;
@@ -17,27 +18,37 @@ namespace ObjectBrowser.Shared.ViewModels
     public class BrowserViewModel : ViewModelBase
     {
         private readonly IAssemblyMetadataExtractor _assemblyMetadataExtractor;
+        private readonly IDataStorage _dataStorage;
         private List<NodeViewModelBase> _items;
         private bool _loading;
         private NodeViewModelBase _nodeViewModelBase;
         private List<KeyValuePair<string, string>> _selectedItemDetails;
+        private AssemblyMetadata _metadata;
 
-        public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor)
+        public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor, IDataStorage dataStorage)
         {
             _assemblyMetadataExtractor = assemblyMetadataExtractor;
+            _dataStorage = dataStorage;
         }
 
         public async void NavigatedTo()
         {
             Loading = true;
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
+                 //_metadata =
+                 //   _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
+
+
+
+                _metadata = await _dataStorage.Retrieve();
+
                 Items = new List<NodeViewModelBase>
                 {
-                    new AssemblyNodeViewModel(
-                        _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA))))
+                    new AssemblyNodeViewModel(_metadata)
                 };
             });
+           // await _dataStorage.Save(_metadata);
             Loading = false;
         }
 

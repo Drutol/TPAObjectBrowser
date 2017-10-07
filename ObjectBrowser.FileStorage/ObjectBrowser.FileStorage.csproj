@@ -31,7 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileDataStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ObjectBrowser.Interfaces\ObjectBrowser.Interfaces.csproj">
+      <Project>{f6c26c8c-3656-4b2a-a363-ee3eb1dd65c1}</Project>
+      <Name>ObjectBrowser.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ObjectBrowser.Models\ObjectBrowser.Models.csproj">
+      <Project>{c92454fd-7923-4397-ad5d-2a2f2d8050c4}</Project>
+      <Name>ObjectBrowser.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
