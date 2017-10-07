@@ -20,7 +20,7 @@ namespace ObjectBrowser.Models.Entities
         public TypeMetadata DeclaringType { get;  set; }
         public TypeKind TypeKind{ get;  set; }
 
-        public virtual ICollection<Attribute> Attributes{ get;  set; }
+        public virtual ICollection<TypeMetadata> Attributes{ get;  set; }
         public virtual ICollection<TypeMetadata> ImplementedInterfaces{ get;  set; }
         public virtual ICollection<TypeMetadata> NestedTypes{ get;  set; }
         public virtual ICollection<PropertyMetadata> Properties{ get;  set; }

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Models.Enums;
+using ObjectBrowser.Shared.Extensions;
 
 namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 {
@@ -21,6 +22,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
         {
             _metadata = metadata;
             Name = metadata.Name;
+            Details = metadata.GetDetails();
         }
 
         public override IEnumerable<NodeViewModelBase> Children
@@ -35,6 +37,9 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override ICommand LoadChildrenCommand => new RelayCommand(() =>
         {
+            if(_metadata.ReturnType == null)
+                return;
+
             Children = new List<NodeViewModelBase>
             {
                 TypeMetadataToViewModel(_metadata.ReturnType)

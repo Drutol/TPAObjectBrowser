@@ -17,6 +17,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
         public abstract TypeKind Kind { get; }
         public abstract string Name { get; }
         public abstract ICommand LoadChildrenCommand { get; }
+        public List<KeyValuePair<string,string>> Details { get; set; }
 
         public bool IsExpanded
         {

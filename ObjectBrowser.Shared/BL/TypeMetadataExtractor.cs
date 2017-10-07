@@ -42,7 +42,7 @@ namespace ObjectBrowser.Shared.BL
             typeData.BaseType = EmitExtends(type, rootAssembly);
             typeData.Properties = EmitProperties(type.GetProperties(), rootAssembly).ToList();
             typeData.TypeKind = GetTypeKind(type);
-            typeData.Attributes = type.GetCustomAttributes(false).Cast<Attribute>().ToList();
+            typeData.Attributes = EmitAttributes(type, rootAssembly).ToList();
             typeData.EnumFields = EmitEnumFields(type).ToList();
             typeData.Fields = EmitFields(type,rootAssembly).ToList();
 
@@ -50,6 +50,14 @@ namespace ObjectBrowser.Shared.BL
             typeData.RootAssembly = rootAssembly;
 
             return typeData;
+        }
+
+        private IEnumerable<TypeMetadata> EmitAttributes(Type type, AssemblyMetadata rootAssembly)
+        {
+            foreach (var attr in type.GetCustomAttributes(false))
+            {
+                yield return attr.GetType().EmitReference(rootAssembly) ?? Extract(attr.GetType(),rootAssembly);
+            }
         }
 
         private IEnumerable<FieldMetadata> EmitFields(Type type, AssemblyMetadata rootAssembly)

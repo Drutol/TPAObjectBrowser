@@ -8,5 +8,8 @@
     <Application.Resources>
         <statics:ViewModelLocator x:Key="Locator"/>
         <converters:TypeToIconConverter x:Key="TypeToIconConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <converters:VisibilityInverterConverter x:Key="VisibilityInverterConverter" />
     </Application.Resources>
 </Application>

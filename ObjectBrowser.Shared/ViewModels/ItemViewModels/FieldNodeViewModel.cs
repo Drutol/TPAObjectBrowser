@@ -31,7 +31,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public FieldNodeViewModel(EnumFieldMetadata metadata)
         {
-            Name = $"Enum: {metadata.Name} Value: {metadata.Value}";
+            Name = $"{metadata.Name} Value: {metadata.Value}";
             Kind = TypeKind.EnumField;
         }
 

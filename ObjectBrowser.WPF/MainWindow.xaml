@@ -4,27 +4,83 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ObjectBrowser.WPF"
+        xmlns:itemViewModels="clr-namespace:ObjectBrowser.Shared.ViewModels.ItemViewModels;assembly=ObjectBrowser.Shared"
         mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=BrowserViewModel}"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid >
-        <TreeView RenderTransformOrigin="0.5,0.5" ItemsSource="{Binding Items}" Background="#2d2d2d">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                    <Grid Margin="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Margin="4,1" Source="{Binding Kind,Converter={StaticResource TypeToIconConverter}}"/>
-                        <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Name}" Foreground="White"/>
-                    </Grid>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
+        Title="MainWindow" Height="750" Width="925">
+    
+    
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="370" />
+            <ColumnDefinition Width="*" MinWidth="400" />
+        </Grid.ColumnDefinitions>
+        <Grid Background="#1d1d1d">
+            <TreeView x:Name="TreeView" Grid.Column="0" Background="Transparent" RenderTransformOrigin="0.5,0.5"
+                      ItemsSource="{Binding Items}" SelectedItemChanged="TreeView_OnSelectedItemChanged">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                        <Grid Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Margin="4,1" Source="{Binding Kind,Converter={StaticResource TypeToIconConverter}}" />
+                            <TextBlock FontSize="15" Grid.Column="1" Text="{Binding Name}" Foreground="White" />
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+        </Grid>
+        <Grid Grid.Column="1" Background="#3d3d3d">
+            <Grid HorizontalAlignment="Stretch"  Visibility="{Binding ElementName=EmptyNotice,Path=Visibility,Converter={StaticResource VisibilityInverterConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+
+                <ListView x:Name="ListView" Grid.Row="0" Background="Transparent" SelectionChanged="Selector_OnSelected" ItemsSource="{Binding NodeViewModelBase.Children}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Margin="4,1" Source="{Binding Kind,Converter={StaticResource TypeToIconConverter}}" />
+                                <TextBlock FontSize="15" Grid.Column="1" Text="{Binding Name}" Foreground="White" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <ListView Background="#2d2d2d" Grid.Row="1" ItemsSource="{Binding SelectedItemDetails}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Foreground="White" FontSize="16">
+                                <Run Text="{Binding Key,Mode=OneWay}" FontWeight="SemiBold"/> <Run Text="{Binding Value,Mode=OneWay}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+            </Grid>
+            <Grid x:Name="EmptyNotice" HorizontalAlignment="Center" VerticalAlignment="Center"
+                  Visibility="{Binding NodeViewModelBase,Converter={StaticResource NullToVisibilityConverter},ConverterParameter=1}">
+                <TextBlock Foreground="White" Text="Select an item from tree view to see its details."
+                           FontWeight="Light" FontStyle="Italic" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="0" Visibility="{Binding Loading,Converter={StaticResource BoolToVisibilityConverter}}"
+              Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#7f000000">
+            <ProgressBar IsIndeterminate="True" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="20,0" />
+        </Grid>
+
     </Grid>
 </Window>

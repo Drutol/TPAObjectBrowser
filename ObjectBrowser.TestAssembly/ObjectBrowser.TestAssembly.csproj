@@ -44,6 +44,8 @@
     <Compile Include="BusinesLogic\ServceB.cs" />
     <Compile Include="BusinesLogic\ServiceA.cs" />
     <Compile Include="BusinesLogic\ServiceC.cs" />
+    <Compile Include="BusinesLogic\TestAttribute.cs" />
+    <Compile Include="BusinesLogic\TestInterface.cs" />
     <Compile Include="BusinesLogic\ViewModel.cs" />
     <Compile Include="Data\Linq2SQL.cs" />
     <Compile Include="Data\SomeEnum.cs" />

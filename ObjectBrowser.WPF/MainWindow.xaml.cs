@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ObjectBrowser.Shared.Statics;
+using ObjectBrowser.Shared.ViewModels.ItemViewModels;
 using ObjectBrowser.WPF.Statics;
 
 namespace ObjectBrowser.WPF
@@ -32,6 +33,21 @@ namespace ObjectBrowser.WPF
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             ViewModelLocator.BrowserViewModel.NavigatedTo();
+        }
+
+        private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            ViewModelLocator.BrowserViewModel.TreeViewItemSelectedCommand.Execute(
+                TreeView.SelectedItem as NodeViewModelBase);
+        }
+
+        private void Selector_OnSelected(object sender, RoutedEventArgs e)
+        {
+            if(ListView.SelectedItem == null)
+                return;
+            
+            ViewModelLocator.BrowserViewModel.ListViewItemSelectedCommand.Execute(
+                ListView.SelectedItem as NodeViewModelBase);
         }
     }
 }
