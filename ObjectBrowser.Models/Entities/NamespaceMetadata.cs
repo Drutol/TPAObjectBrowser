@@ -12,6 +12,7 @@ namespace ObjectBrowser.Models.Entities
             Types = types;
         }
 
+        public AssemblyMetadata RootAssembly { get; set; }
         public string NamespaceName { get; set; }
         public virtual ICollection<TypeMetadata> Types { get; set; }
     }

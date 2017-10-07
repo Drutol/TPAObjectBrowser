@@ -5,6 +5,6 @@ namespace ObjectBrowser.Shared.BL
 {
     public interface ITypeMetadataExtractor
     {
-        TypeMetadata Extract(Type type);
+        TypeMetadata Extract(Type type, AssemblyMetadata rootAssembly);
     }
 }

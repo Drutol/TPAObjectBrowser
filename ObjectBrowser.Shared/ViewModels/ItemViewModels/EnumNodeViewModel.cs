@@ -13,6 +13,9 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
     public class EnumNodeViewModel : NodeViewModelBase
     {
         private readonly TypeMetadata _metadata;
+        private IEnumerable<NodeViewModelBase> _children;
+        public override TypeKind Kind { get; } = TypeKind.EnumType;
+        public override string Name { get; }
 
         public EnumNodeViewModel(TypeMetadata metadata)
         {
@@ -20,13 +23,19 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
             Name = _metadata.TypeName;
         }
 
-        public override IEnumerable<NodeViewModelBase> Children { get; set; }
-        public override TypeKind Kind { get; } = TypeKind.EnumType;
-        public override string Name { get; }
+        public override IEnumerable<NodeViewModelBase> Children
+        {
+            get => _children;
+            set
+            {
+                _children = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public override ICommand LoadChildrenCommand => new RelayCommand(() =>
         {
-            
+            Children = _metadata.EnumFields.Select(metadata => new FieldNodeViewModel(metadata));
         });
     }
 }

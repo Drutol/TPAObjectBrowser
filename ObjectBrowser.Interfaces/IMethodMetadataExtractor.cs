@@ -5,6 +5,6 @@ namespace ObjectBrowser.Shared.BL
 {
     public interface IMethodMetadataExtractor
     {
-        MethodMetadata Extract(MethodBase method);
+        MethodMetadata Extract(MethodBase method, AssemblyMetadata data, ITypeMetadataExtractor extractor);
     }
 }

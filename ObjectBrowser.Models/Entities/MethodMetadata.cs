@@ -12,6 +12,7 @@ namespace ObjectBrowser.Models.Entities
         //vars
         public string Name { get; set; }
         public MethodModifiers Modifiers { get; set; }
+        public AssemblyMetadata RootAssembly { get; set; }
         public TypeMetadata ReturnType { get; set; }
         public bool Extension { get; set; }
         public virtual ICollection<TypeMetadata> GenericArguments { get; set; }

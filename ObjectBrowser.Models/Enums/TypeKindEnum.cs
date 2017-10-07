@@ -15,6 +15,8 @@ namespace ObjectBrowser.Models.Enums
         Namespace,
         Assembly,
         MethodType,
-        Property
+        Property,
+        Field,
+        EnumField
     }
 }

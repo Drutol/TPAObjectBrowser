@@ -20,15 +20,19 @@ namespace ObjectBrowser.Shared.BL
 
         public AssemblyMetadata Extract(Assembly assembly)
         {
-            return new AssemblyMetadata
+            var data = new AssemblyMetadata
             {
                 Name = assembly.ManifestModule.Name,
-                Namespaces = assembly.GetTypes()
-                    .Where(type => type.GetVisible())
-                    .GroupBy(type => type.GetNamespace())
-                    .OrderBy(group => group.Key)
-                    .Select(group => _namespaceMetadataExtractor.Extract(group.Key, group.Select(type => type))).ToList(),
             };
+            data.Namespaces = assembly.GetTypes()
+                .Where(type => type.GetVisible())
+                .GroupBy(type => type.GetNamespace())
+                .OrderBy(group => group.Key)
+                .Select(group => _namespaceMetadataExtractor.Extract(group.Key, group.Select(type => type), data))
+                .ToList();
+
+            return data;
+
         }
 
     }

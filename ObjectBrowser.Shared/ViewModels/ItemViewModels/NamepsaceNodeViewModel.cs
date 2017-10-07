@@ -24,7 +24,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override IEnumerable<NodeViewModelBase> Children
         {
-            get { return _children; }
+            get => _children;
             set
             {
                 _children = value;
@@ -35,8 +35,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override ICommand LoadChildrenCommand => new RelayCommand(() =>
         {
-            Children = _metadata.Types.Where(typeMetadata => typeMetadata.TypeKind == TypeKind.ClassType)
-                .Select(TypeMetadataToViewModel);
+            Children = _metadata.Types.Select(TypeMetadataToViewModel);
         });
     }
 }

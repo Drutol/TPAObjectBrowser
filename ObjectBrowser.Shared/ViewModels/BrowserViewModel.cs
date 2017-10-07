@@ -5,8 +5,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Shared.BL;
 using ObjectBrowser.Shared.ViewModels.ItemViewModels;
+using ObjectBrowser.TestAssembly.BusinesLogic;
 
 namespace ObjectBrowser.Shared.ViewModels
 {
@@ -24,13 +26,13 @@ namespace ObjectBrowser.Shared.ViewModels
         {
             Items = new List<NodeViewModelBase>
             {
-                new AssemblyNodeViewModel(_assemblyMetadataExtractor.Extract(Assembly.GetEntryAssembly()))
+                new AssemblyNodeViewModel(_assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA))))
             };
         }
 
         public List<NodeViewModelBase> Items
         {
-            get { return _items; }
+            get => _items;
             set
             {
                 _items = value;

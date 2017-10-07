@@ -10,6 +10,6 @@ namespace ObjectBrowser.Models.Entities
         public string Name { get; set; }
         public virtual ICollection<NamespaceMetadata> Namespaces { get; set; }
 
-
+        public virtual ICollection<TypeMetadata> RegisteredTypes { get; set; } = new List<TypeMetadata>();
     }
 }

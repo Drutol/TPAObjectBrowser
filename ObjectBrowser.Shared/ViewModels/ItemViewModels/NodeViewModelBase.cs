@@ -20,7 +20,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get => _isExpanded;
             set
             {
                 _isExpanded = value;
@@ -31,6 +31,12 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         protected NodeViewModelBase TypeMetadataToViewModel(TypeMetadata metadata)
         {
+            if (metadata.TypeReference)
+            {
+                return TypeMetadataToViewModel(metadata.RootAssembly.RegisteredTypes.First(typeMetadata =>
+                    typeMetadata.GetHashCode() == metadata.GetHashCode()));
+            }
+
             switch (metadata.TypeKind)
             {
                 case TypeKind.EnumType:

@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ObjectBrowser.Models.Entities
 {
-    public class PropertyMetadata
+    public class FieldMetadata
     {
-        public PropertyMetadata(string name, TypeMetadata typeMetadata)
+        public FieldMetadata(string name, TypeMetadata typeMetadata)
         {
             Name = name;
             TypeMetadata = typeMetadata;
         }
 
-        public AssemblyMetadata RootAssembly { get; set; }
         public string Name { get; set; }
         public TypeMetadata TypeMetadata { get; set; }
     }

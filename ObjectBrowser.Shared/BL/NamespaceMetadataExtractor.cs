@@ -16,9 +16,13 @@ namespace ObjectBrowser.Shared.BL
             _typeMetadataExtractor = typeMetadataExtractor;
         }
 
-        public NamespaceMetadata Extract(string name, IEnumerable<Type> types)
+        public NamespaceMetadata Extract(string name, IEnumerable<Type> types, AssemblyMetadata data)
         {
-            return new NamespaceMetadata(name, types.OrderBy(type => type.Name).Select(type => _typeMetadataExtractor.Extract(type)).ToList());
+            return new NamespaceMetadata(name,
+                types.OrderBy(type => type.Name).Select(type => _typeMetadataExtractor.Extract(type, data)).ToList())
+            {
+                RootAssembly = data
+            };
         }
     }
 }

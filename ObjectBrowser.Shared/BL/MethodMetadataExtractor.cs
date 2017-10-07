@@ -13,33 +13,50 @@ namespace ObjectBrowser.Shared.BL
 {
     public class MethodMetadataExtractor : IMethodMetadataExtractor
     {
-        public MethodMetadata Extract(MethodBase method)
+        public MethodMetadata Extract(MethodBase method, AssemblyMetadata rootAssembly, ITypeMetadataExtractor extractor)
         {
-            return new MethodMetadata
+            var methodData = new MethodMetadata
             {
                 Name = method.Name,
                 GenericArguments = !method.IsGenericMethodDefinition
                     ? null
-                    : method.GetGenericArguments().Select(type => type.EmitReference()).ToList(),
-                ReturnType = EmitReturnType(method),
-                Parameters = EmitParameters(method.GetParameters()),
+                    : EmitGenericArguments(method.GetGenericArguments(),rootAssembly,extractor).ToList(),
+                ReturnType = EmitReturnType(method, rootAssembly,extractor),
+                Parameters = EmitParameters(method.GetParameters(), rootAssembly,extractor).ToList(),
                 Modifiers = EmitModifiers(method),
                 Extension = EmitExtension(method),
             };
+
+            methodData.RootAssembly = rootAssembly;
+
+            return methodData;
         }
 
-        private List<ParameterMetadata> EmitParameters(IEnumerable<ParameterInfo> parms)
+        private IEnumerable<TypeMetadata> EmitGenericArguments(IEnumerable<Type> param, AssemblyMetadata rootAssembly,ITypeMetadataExtractor extractor)
         {
-            return parms.Select(
-                parm => new ParameterMetadata(parm.Name, parm.ParameterType.EmitReference())).ToList();
+            foreach (var type in param)
+            {
+                yield return type.EmitReference(rootAssembly) ?? extractor.Extract(type, rootAssembly); ;
+            }
         }
 
-        private TypeMetadata EmitReturnType(MethodBase method)
+        private IEnumerable<ParameterMetadata> EmitParameters(IEnumerable<ParameterInfo> param, AssemblyMetadata rootAssembly, ITypeMetadataExtractor extractor)
+        {
+            foreach (var parameterInfo in param)
+            {
+                yield return new ParameterMetadata(parameterInfo.Name, parameterInfo.ParameterType.EmitReference(rootAssembly) ?? extractor.Extract(parameterInfo.ParameterType, rootAssembly));
+            }          
+        }
+
+        private TypeMetadata EmitReturnType(MethodBase method, AssemblyMetadata rootAssembly, ITypeMetadataExtractor extractor)
         {
             var methodInfo = method as MethodInfo;
             if (methodInfo == null)
                 return null;
-            return methodInfo.ReturnType.EmitReference();
+
+            return methodInfo.ReturnType.EmitReference(rootAssembly) ?? extractor.Extract(methodInfo.ReturnType, rootAssembly);
+
+
         }
 
         private bool EmitExtension(MethodBase method)

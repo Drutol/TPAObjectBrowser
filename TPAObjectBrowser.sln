@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{5171
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBrowser.FileStorage", "ObjectBrowser.FileStorage\ObjectBrowser.FileStorage.csproj", "{5B91852D-15B0-48EF-828B-B9C47E96A27C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBrowser.TestAssembly", "ObjectBrowser.TestAssembly\ObjectBrowser.TestAssembly.csproj", "{94E5DE03-C839-41D7-B35C-9C13F833F7E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{5B91852D-15B0-48EF-828B-B9C47E96A27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B91852D-15B0-48EF-828B-B9C47E96A27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B91852D-15B0-48EF-828B-B9C47E96A27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E5DE03-C839-41D7-B35C-9C13F833F7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E5DE03-C839-41D7-B35C-9C13F833F7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E5DE03-C839-41D7-B35C-9C13F833F7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E5DE03-C839-41D7-B35C-9C13F833F7E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{8FD161B8-FC52-4AD0-8031-B691161434FF} = {51719F67-2614-4579-AFC4-378E15378AD4}
 		{51719F67-2614-4579-AFC4-378E15378AD4} = {DC1B25C1-434D-4CD2-9930-C8D567B98B5A}
 		{5B91852D-15B0-48EF-828B-B9C47E96A27C} = {51719F67-2614-4579-AFC4-378E15378AD4}
+		{94E5DE03-C839-41D7-B35C-9C13F833F7E8} = {DC1B25C1-434D-4CD2-9930-C8D567B98B5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23EA3AF1-02D3-4F0E-AB96-0C750D4D304B}

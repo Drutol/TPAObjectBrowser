@@ -25,25 +25,20 @@ namespace ObjectBrowser.Shared.Extensions
         }
 
 
-        internal static TypeMetadata EmitReference(this Type type)
+        internal static TypeMetadata EmitReference(this Type type, AssemblyMetadata assembly)
         {
-            if (!type.IsGenericType)
-                return new TypeMetadata
+            if (assembly.RegisteredTypes.Any(metadata => metadata.GetHashCode().Equals(type.GetHashCode())))
+            {
+                return new TypeMetadata(type.GetHashCode())
                 {
                     TypeName = type.Name,
                     NamespaceName = type.GetNamespace(),
+                    TypeReference = true,   
+                    RootAssembly = assembly
                 };
-            return new TypeMetadata
-            {
-                TypeName = type.Name,
-                NamespaceName = type.GetNamespace(),
-                GenericArguments = EmitGenericArguments(type.GetGenericArguments())
-            };
-        }
+            }
 
-        private static List<TypeMetadata> EmitGenericArguments(IEnumerable<Type> arguments)
-        {
-            return arguments.Select(EmitReference).ToList();
+            return null;
         }
     }
 }

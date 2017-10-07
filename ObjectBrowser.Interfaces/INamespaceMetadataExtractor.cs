@@ -6,6 +6,6 @@ namespace ObjectBrowser.Shared.BL
 {
     public interface INamespaceMetadataExtractor
     {
-        NamespaceMetadata Extract(string name, IEnumerable<Type> types);
+        NamespaceMetadata Extract(string name, IEnumerable<Type> types, AssemblyMetadata data);
     }
 }

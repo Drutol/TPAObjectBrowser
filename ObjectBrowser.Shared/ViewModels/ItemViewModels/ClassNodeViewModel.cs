@@ -25,7 +25,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override IEnumerable<NodeViewModelBase> Children
         {
-            get { return _children; }
+            get => _children;
             set
             {
                 _children = value;
@@ -40,6 +40,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
             items.AddRange(_metadata.Methods.Select(metadata => new MethodNodeViewModel(metadata)));
             items.AddRange(_metadata.Properties.Select(metadata => new PropertyNodeViewModel(metadata)));
             items.AddRange(_metadata.NestedTypes.Select(TypeMetadataToViewModel));
+            items.AddRange(_metadata.Fields.Select(metadata => new FieldNodeViewModel(metadata)));
 
             Children = items;          
         });

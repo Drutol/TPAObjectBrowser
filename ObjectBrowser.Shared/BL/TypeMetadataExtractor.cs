@@ -19,52 +19,118 @@ namespace ObjectBrowser.Shared.BL
             _methodMetadataExtractor = methodMetadataExtractor;
         }
 
-        public TypeMetadata Extract(Type type)
+        public TypeMetadata Extract(Type type, AssemblyMetadata rootAssembly)
         {
-            return new TypeMetadata
+            var typeData = new TypeMetadata(type.GetHashCode());
+
+            rootAssembly.RegisteredTypes.Add(typeData);
+
+            typeData.TypeName = type.Name;
+            typeData.DeclaringType = EmitDeclaringType(type.DeclaringType, rootAssembly);
+            typeData.Constructors = type.GetConstructors()
+                .Select(info => _methodMetadataExtractor.Extract(info, rootAssembly, this)).ToList();
+            typeData.Methods = type.GetMethods().Where(info => !info.IsSpecialName)
+                .Select(info => _methodMetadataExtractor.Extract(info, rootAssembly, this))
+                .ToList();
+            typeData.NestedTypes = EmitNestedTypes(type.GetNestedTypes(), rootAssembly);
+            typeData.ImplementedInterfaces = EmitImplements(type.GetInterfaces(), rootAssembly).ToList();
+            typeData.GenericArguments =
+                !type.IsGenericTypeDefinition
+                    ? null
+                    : EmitGenericArguments(type.GetGenericArguments(), rootAssembly).ToList();
+            typeData.Modifiers = EmitModifiers(type);
+            typeData.BaseType = EmitExtends(type, rootAssembly);
+            typeData.Properties = EmitProperties(type.GetProperties(), rootAssembly).ToList();
+            typeData.TypeKind = GetTypeKind(type);
+            typeData.Attributes = type.GetCustomAttributes(false).Cast<Attribute>().ToList();
+            typeData.EnumFields = EmitEnumFields(type).ToList();
+            typeData.Fields = EmitFields(type,rootAssembly).ToList();
+
+
+            typeData.RootAssembly = rootAssembly;
+
+            return typeData;
+        }
+
+        private IEnumerable<FieldMetadata> EmitFields(Type type, AssemblyMetadata rootAssembly)
+        {
+            foreach (var fieldInfo in type.GetFields())
             {
-                TypeName = type.Name,
-                DeclaringType = EmitDeclaringType(type.DeclaringType),
-                Constructors = type.GetConstructors().Select(info => _methodMetadataExtractor.Extract(info)).ToList(),
-                Methods = type.GetMethods().Select(info => _methodMetadataExtractor.Extract(info)).ToList(),
-                NestedTypes = EmitNestedTypes(type.GetNestedTypes()),
-                ImplementedInterfaces = EmitImplements(type.GetInterfaces()),
-                GenericArguments =
-                    !type.IsGenericTypeDefinition ? null : EmitGenericArguments(type.GetGenericArguments()),
-                Modifiers = EmitModifiers(type),
-                BaseType = EmitExtends(type),
-                Properties = EmitProperties(type.GetProperties()).ToList(),
-                TypeKind = GetTypeKind(type),
-                Attributes = type.GetCustomAttributes(false).Cast<Attribute>().ToList(),
-            };
+                if (!fieldInfo.FieldType.IsEnum)
+                {
+                    yield return new FieldMetadata(fieldInfo.Name,fieldInfo.FieldType.EmitReference(rootAssembly) ?? Extract(fieldInfo.FieldType,rootAssembly));
+                }
+            }
         }
 
-        public IEnumerable<PropertyMetadata> EmitProperties(IEnumerable<PropertyInfo> props)
+        private IEnumerable<EnumFieldMetadata> EmitEnumFields(Type type)
         {
-            return props.Where(prop => prop.GetGetMethod().GetVisible() || prop.GetSetMethod().GetVisible())
-                .Select(prop => new PropertyMetadata(prop.Name, prop.PropertyType.EmitReference()));
+            foreach (var fieldInfo in type.GetFields())
+            {
+                if (fieldInfo.FieldType.IsEnum)
+                {
+                    int val = 0;
+                    try
+                    {
+                        val = (int) fieldInfo.GetRawConstantValue();
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                    yield return new EnumFieldMetadata(fieldInfo.Name,val);
+                }
+            }
         }
 
-        private List<TypeMetadata> EmitGenericArguments(ICollection<Type> arguments)
+        private IEnumerable<PropertyMetadata> EmitProperties(IEnumerable<PropertyInfo> props,
+            AssemblyMetadata rootAssembly)
         {
-            return arguments.Select(type => type.EmitReference()).ToList();
+            foreach (var propertyInfo in props.Where(prop =>
+                prop.GetGetMethod().GetVisible() || prop.GetSetMethod().GetVisible()))
+            {
+                TypeMetadata typeMetadata;
+
+                typeMetadata = propertyInfo.PropertyType.EmitReference(rootAssembly) ??
+                               Extract(propertyInfo.PropertyType, rootAssembly);
+
+                yield return new PropertyMetadata(propertyInfo.Name, typeMetadata);
+            }
         }
 
-        private TypeMetadata EmitDeclaringType(Type declaringType)
+        private IEnumerable<TypeMetadata> EmitGenericArguments(ICollection<Type> arguments,
+            AssemblyMetadata rootAssembly)
+        {
+            foreach (var type in arguments)
+            {
+                yield return type.EmitReference(rootAssembly) ?? Extract(type, rootAssembly);
+                ;
+            }
+        }
+
+        private TypeMetadata EmitDeclaringType(Type declaringType, AssemblyMetadata rootAssembly)
         {
             if (declaringType == null)
                 return null;
-            return declaringType.EmitReference();
+
+            return declaringType.EmitReference(rootAssembly) ?? Extract(declaringType, rootAssembly);
+
+
         }
 
-        private List<TypeMetadata> EmitNestedTypes(ICollection<Type> nestedTypes)
+        private List<TypeMetadata> EmitNestedTypes(ICollection<Type> nestedTypes, AssemblyMetadata rootAssembly)
         {
-            return nestedTypes.Where(type => type.GetVisible()).Select(Extract).ToList();
+            return nestedTypes.Where(type => type.GetVisible()).Select(type => Extract(type, rootAssembly)).ToList();
         }
 
-        private List<TypeMetadata> EmitImplements(ICollection<Type> interfaces)
+        private IEnumerable<TypeMetadata> EmitImplements(ICollection<Type> interfaces, AssemblyMetadata rootAssembly)
         {
-            return interfaces.Select(type => type.EmitReference()).ToList();
+            foreach (var @interface in interfaces)
+            {
+                yield return @interface.EmitReference(rootAssembly) ?? Extract(@interface, rootAssembly);
+                ;
+                ;
+            }
         }
 
         private TypeKind GetTypeKind(Type type)
@@ -98,12 +164,14 @@ namespace ObjectBrowser.Shared.BL
             };
         }
 
-        private TypeMetadata EmitExtends(Type baseType)
+        private TypeMetadata EmitExtends(Type baseType, AssemblyMetadata rootAssembly)
         {
             if (baseType == null || baseType == typeof(object) || baseType == typeof(ValueType) ||
                 baseType == typeof(Enum))
                 return null;
-            return baseType.EmitReference();
+
+            return baseType.EmitReference(rootAssembly) ?? Extract(baseType, rootAssembly);
+
         }
     }
 }

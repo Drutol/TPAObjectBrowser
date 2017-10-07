@@ -24,7 +24,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override IEnumerable<NodeViewModelBase> Children
         {
-            get { return _children; }
+            get => _children;
             set
             {
                 _children = value;

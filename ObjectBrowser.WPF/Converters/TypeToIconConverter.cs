@@ -33,6 +33,10 @@ namespace ObjectBrowser.WPF.Converters
                     return new BitmapImage(new Uri("/Assets/method.jpeg", UriKind.Relative));
                 case TypeKind.Property:
                     return new BitmapImage(new Uri("/Assets/prop.jpeg", UriKind.Relative));
+                case TypeKind.Field:
+                    return new BitmapImage(new Uri("/Assets/field.jpeg", UriKind.Relative));
+                case TypeKind.EnumField:
+                    return new BitmapImage(new Uri("/Assets/enum.jpeg", UriKind.Relative));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }    

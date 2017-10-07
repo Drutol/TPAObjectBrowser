@@ -69,6 +69,7 @@
     <Compile Include="ViewModels\ItemViewModels\AssemblyNodeViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\ClassNodeViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\EnumNodeViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\FieldNodeViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\InterfaceNodeViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\MethodNodeViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\NamepsaceNodeViewModel.cs" />
@@ -85,10 +86,16 @@
       <Project>{C92454FD-7923-4397-AD5D-2A2F2D8050C4}</Project>
       <Name>ObjectBrowser.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ObjectBrowser.TestAssembly\ObjectBrowser.TestAssembly.csproj">
+      <Project>{94e5de03-c839-41d7-b35c-9c13f833f7e8}</Project>
+      <Name>ObjectBrowser.TestAssembly</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
