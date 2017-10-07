@@ -94,6 +94,10 @@
     <Compile Include="ViewModels\ItemViewModels\StructNodeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ObjectBrowser.DataAccess\ObjectBrowser.DatabaseStorage.csproj">
+      <Project>{8fd161b8-fc52-4ad0-8031-b691161434ff}</Project>
+      <Name>ObjectBrowser.DatabaseStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ObjectBrowser.FileStorage\ObjectBrowser.FileStorage.csproj">
       <Project>{5b91852d-15b0-48ef-828b-b9c47e96a27c}</Project>
       <Name>ObjectBrowser.FileStorage</Name>

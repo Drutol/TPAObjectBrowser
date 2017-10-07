@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using ObjectBrowser.DataAccess;
 using ObjectBrowser.FileStorage;
 using ObjectBrowser.Interfaces;
 using ObjectBrowser.Models.Entities;
@@ -28,12 +29,12 @@ namespace ObjectBrowser.Shared.Statics
         public Importer()
         {
 
-            var asm = Assembly.GetAssembly(typeof(FileDataStorage));
+            //var asm = Assembly.GetAssembly(typeof(FileDataStorage));
+            var asm = Assembly.GetAssembly(typeof(DatabaseDataStorage));
             AggregateCatalog catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(asm));
             _compositionContainer = new CompositionContainer(catalog);
-            //containerConfiguration.WithAssembly(asm);
-            //_compositionContainer = containerConfiguration.CreateContainer();
+
 
             _compositionContainer.ComposeParts(this);
 

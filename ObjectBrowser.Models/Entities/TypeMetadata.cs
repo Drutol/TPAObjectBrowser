@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Microsoft.EntityFrameworkCore;
+using ObjectBrowser.Interfaces;
 using ObjectBrowser.Models.Enums;
 
 namespace ObjectBrowser.Models.Entities
 {
     [DataContract(IsReference = true)]
-    public class TypeMetadata
+    public class TypeMetadata : IModelWithRelation
     {
+        public long Id { get; set; }
+
         public TypeMetadata()
         {
 
@@ -57,9 +61,65 @@ namespace ObjectBrowser.Models.Entities
         [DataMember]
         public bool TypeReference { get; set; }
 
+        [IgnoreDataMember]
+        public NamespaceMetadata Namespace { get; set; }
+
+        [IgnoreDataMember]
+        public TypeMetadata ParentTypeA { get; set; }
+        [IgnoreDataMember]
+        public TypeMetadata ParentTypeB { get; set; }
+        [IgnoreDataMember]
+        public TypeMetadata ParentTypeC { get; set; }
+        [IgnoreDataMember]
+        public TypeMetadata ParentTypeD { get; set; }
+        [IgnoreDataMember]
+        public TypeMetadata ParentTypeE { get; set; }
+
+        [IgnoreDataMember]
+        public MethodMetadata ParentMethod { get; set; }
+
         public override int GetHashCode()
         {
             return TypeHash;
+        }
+
+        public static void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.Attributes)
+                .WithOne(n => n.ParentTypeA);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.ImplementedInterfaces)
+                .WithOne(r => r.ParentTypeB);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.NestedTypes)
+                .WithOne(r => r.ParentTypeC);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.Properties)
+                .WithOne(r => r.ParentType);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.GenericArguments)
+                .WithOne(r => r.ParentTypeE);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.Methods)
+                .WithOne(r => r.ParentTypeA);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.Constructors)
+                .WithOne(r => r.ParentTypeB);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.EnumFields)
+                .WithOne(r => r.ParentType);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(a => a.Fields)
+                .WithOne(r => r.ParentType);
         }
     }
 }

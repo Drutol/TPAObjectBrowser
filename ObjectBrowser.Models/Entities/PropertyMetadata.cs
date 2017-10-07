@@ -8,6 +8,8 @@ namespace ObjectBrowser.Models.Entities
     [DataContract(IsReference = true)]
     public class PropertyMetadata
     {
+        public long Id { get; set; }
+
         public PropertyMetadata()
         {
 
@@ -24,5 +26,8 @@ namespace ObjectBrowser.Models.Entities
         public string Name { get; set; }
         [DataMember]
         public TypeMetadata TypeMetadata { get; set; }
+
+        [IgnoreDataMember]
+        public TypeMetadata ParentType { get; set; }
     }
 }

@@ -38,9 +38,6 @@ namespace ObjectBrowser.Shared.ViewModels
             {
                  //_metadata =
                  //   _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
-
-
-
                 _metadata = await _dataStorage.Retrieve();
 
                 Items = new List<NodeViewModelBase>
@@ -48,7 +45,7 @@ namespace ObjectBrowser.Shared.ViewModels
                     new AssemblyNodeViewModel(_metadata)
                 };
             });
-           // await _dataStorage.Save(_metadata);
+            //await _dataStorage.Save(_metadata);
             Loading = false;
         }
 
@@ -96,11 +93,29 @@ namespace ObjectBrowser.Shared.ViewModels
         public ICommand TreeViewItemSelectedCommand =>
             new RelayCommand<NodeViewModelBase>(vm =>
             {
-                NodeViewModelBase = vm;
-                SelectedItemDetails = vm.Details;
+                try
+                {
+                    NodeViewModelBase = vm;
+                    SelectedItemDetails = vm.Details;
+                }
+                catch (Exception e)
+                {
+
+                }
             });
 
         public ICommand ListViewItemSelectedCommand =>
-            new RelayCommand<NodeViewModelBase>(vm => SelectedItemDetails = vm.Details);
+            new RelayCommand<NodeViewModelBase>(vm =>
+            {
+                try
+                {
+                    SelectedItemDetails = vm.Details;
+                }
+                catch (Exception e)
+                {
+
+                }
+
+            });
     }
 }

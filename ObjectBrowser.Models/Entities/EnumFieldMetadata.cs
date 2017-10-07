@@ -10,6 +10,7 @@ namespace ObjectBrowser.Models.Entities
     [DataContract(IsReference = true)]
     public class EnumFieldMetadata
     {
+        public long Id { get; set; }
         public EnumFieldMetadata()
         {
             
@@ -25,5 +26,8 @@ namespace ObjectBrowser.Models.Entities
         public string Name { get; set; }
         [DataMember]
         public int Value { get; set; }
+
+        [IgnoreDataMember]
+        public TypeMetadata ParentType { get; set; }
     }
 }

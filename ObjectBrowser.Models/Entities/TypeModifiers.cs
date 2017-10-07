@@ -11,6 +11,8 @@ namespace ObjectBrowser.Models.Entities
     [DataContract(IsReference = true)]
     public class TypeModifiers
     {
+        public long Id { get; set; }
+
         [DataMember]
         public AccessLevel AccessLevel { get; set; }
         [DataMember]

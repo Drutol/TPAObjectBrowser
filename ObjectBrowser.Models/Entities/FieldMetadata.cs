@@ -10,6 +10,7 @@ namespace ObjectBrowser.Models.Entities
     [DataContract(IsReference = true)]
     public class FieldMetadata
     {
+        public long Id { get; set; }
         public FieldMetadata()
         {
 
@@ -24,5 +25,8 @@ namespace ObjectBrowser.Models.Entities
         public string Name { get; set; }
         [DataMember]
         public TypeMetadata TypeMetadata { get; set; }
+
+        [IgnoreDataMember]
+        public TypeMetadata ParentType { get; set; }
     }
 }

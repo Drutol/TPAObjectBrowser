@@ -17,15 +17,15 @@ namespace ObjectBrowser.FileStorage
     {
         public async Task Save(AssemblyMetadata assembly)
         {
-            using (MemoryStream memStm = new MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
                 var serialzier = new DataContractSerializer(typeof(AssemblyMetadata));
-                serialzier.WriteObject(memStm, assembly);
+                serialzier.WriteObject(memoryStream, assembly);
 
 
-                memStm.Seek(0, SeekOrigin.Begin);
+                memoryStream.Seek(0, SeekOrigin.Begin);
 
-                using (var streamReader = new StreamReader(memStm))
+                using (var streamReader = new StreamReader(memoryStream))
                 {
                     var writer = new StreamWriter(@"data.xml");
                     var str = await streamReader.ReadToEndAsync();
@@ -34,9 +34,6 @@ namespace ObjectBrowser.FileStorage
                     writer.Dispose();
                 }
             }
-            //XmlSerializer xs = new XmlSerializer(typeof(AssemblyMetadata));
-            //TextWriter tw = 
-            //xs.Serialize(tw,assembly);
         }
 
         public async Task<AssemblyMetadata> Retrieve()
