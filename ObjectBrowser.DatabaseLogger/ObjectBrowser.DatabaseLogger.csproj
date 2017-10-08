@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C92454FD-7923-4397-AD5D-2A2F2D8050C4}</ProjectGuid>
+    <ProjectGuid>{4B139801-FDFA-42AB-BF56-D53CC9275C2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ObjectBrowser.Models</RootNamespace>
-    <AssemblyName>ObjectBrowser.Models</AssemblyName>
+    <RootNamespace>ObjectBrowser.DatabaseLogger</RootNamespace>
+    <AssemblyName>ObjectBrowser.DatabaseLogger</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -37,6 +37,9 @@
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.0.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Design.2.0.0\lib\net461\Microsoft.EntityFrameworkCore.Design.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.2.0.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
@@ -102,37 +105,40 @@
     <Reference Include="System.Interactive.Async, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net46\System.Interactive.Async.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.4.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\AssemblyMetadata.cs" />
-    <Compile Include="Entities\EnumFieldMetadata.cs" />
-    <Compile Include="Entities\FieldMetadata.cs" />
-    <Compile Include="Entities\MethodMetadata.cs" />
-    <Compile Include="Entities\MethodModifiers.cs" />
-    <Compile Include="Entities\NamespaceMetadata.cs" />
-    <Compile Include="Entities\ParameterMetadata.cs" />
-    <Compile Include="Entities\PropertyMetadata.cs" />
-    <Compile Include="Entities\TypeMetadata.cs" />
-    <Compile Include="Entities\TypeModifiers.cs" />
-    <Compile Include="Enums\AccessLevel.cs" />
-    <Compile Include="Enums\LogSeverityEnum.cs" />
-    <Compile Include="Enums\TypeKindEnum.cs" />
-    <Compile Include="IModelWithRelation.cs" />
+    <Compile Include="DatabaseLogger.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="LogDatabaseContext.cs" />
+    <Compile Include="Migrations\20171008131634_ModelCreation.cs" />
+    <Compile Include="Migrations\20171008131634_ModelCreation.designer.cs">
+      <DependentUpon>20171008131634_ModelCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\LogDatabaseContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ObjectBrowser.Interfaces\ObjectBrowser.Interfaces.csproj">
+      <Project>{f6c26c8c-3656-4b2a-a363-ee3eb1dd65c1}</Project>
+      <Name>ObjectBrowser.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ObjectBrowser.Models\ObjectBrowser.Models.csproj">
+      <Project>{c92454fd-7923-4397-ad5d-2a2f2d8050c4}</Project>
+      <Name>ObjectBrowser.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />

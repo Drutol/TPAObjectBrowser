@@ -24,7 +24,7 @@ namespace ObjectBrowser.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=assembly.db"/*, builder => builder.MigrationsAssembly("")*/);
+            optionsBuilder.UseSqlite("Data Source=assembly.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

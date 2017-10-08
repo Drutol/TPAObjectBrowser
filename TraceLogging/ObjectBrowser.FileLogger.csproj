@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F6C26C8C-3656-4B2A-A363-EE3EB1DD65C1}</ProjectGuid>
+    <ProjectGuid>{3F33A659-DC5E-4707-9A03-CCE115039FEE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ObjectBrowser.Interfaces</RootNamespace>
-    <AssemblyName>ObjectBrowser.Interfaces</AssemblyName>
+    <RootNamespace>ObjectBrowser.FileLogger</RootNamespace>
+    <AssemblyName>ObjectBrowser.FileLogger</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,19 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAssemblyMetadataExtractor.cs" />
-    <Compile Include="IDataStorage.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="IMethodMetadataExtractor.cs" />
-    <Compile Include="INamespaceMetadataExtractor.cs" />
-    <Compile Include="ITypeMetadataExtractor.cs" />
+    <Compile Include="FileLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ObjectBrowser.Interfaces\ObjectBrowser.Interfaces.csproj">
+      <Project>{f6c26c8c-3656-4b2a-a363-ee3eb1dd65c1}</Project>
+      <Name>ObjectBrowser.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ObjectBrowser.Models\ObjectBrowser.Models.csproj">
       <Project>{c92454fd-7923-4397-ad5d-2a2f2d8050c4}</Project>
       <Name>ObjectBrowser.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -181,7 +181,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyDatabaseCOntext.cs" />
+    <Compile Include="AssemblyDatabaseContext.cs" />
     <Compile Include="DatabaseDataStorage.cs" />
     <Compile Include="Migrations\20171008075913_ModelCreation.cs" />
     <Compile Include="Migrations\20171008075913_ModelCreation.designer.cs">

@@ -19,25 +19,27 @@ namespace ObjectBrowser.Shared.ViewModels
     {
         private readonly IAssemblyMetadataExtractor _assemblyMetadataExtractor;
         private readonly IDataStorage _dataStorage;
+        private readonly ILogger _logger;
         private List<NodeViewModelBase> _items;
         private bool _loading;
         private NodeViewModelBase _nodeViewModelBase;
         private List<KeyValuePair<string, string>> _selectedItemDetails;
         private AssemblyMetadata _metadata;
 
-        public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor, IDataStorage dataStorage)
+        public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor, IDataStorage dataStorage, ILogger logger)
         {
             _assemblyMetadataExtractor = assemblyMetadataExtractor;
             _dataStorage = dataStorage;
+            _logger = logger;
         }
 
         public async void NavigatedTo()
         {
             Loading = true;
-             await Task.Run(async () =>
+            await Task.Run(async () =>
             {
-                _metadata = _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
-                //_metadata = await _dataStorage.Retrieve();
+                //_metadata = _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
+                _metadata = await _dataStorage.Retrieve();
 
                 Items = new List<NodeViewModelBase>
                 {
