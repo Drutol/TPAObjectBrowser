@@ -26,7 +26,21 @@ namespace ObjectBrowser.Shared.Extensions
 
         internal static TypeMetadata EmitReference(this Type type, AssemblyMetadata assembly)
         {
-            if (assembly.RegisteredTypes.Any(metadata => metadata.GetHashCode().Equals(type.GetHashCode())))
+            if (assembly.RestrictToNamespace != null)
+            {
+                if (!type.Namespace.StartsWith(assembly.RestrictToNamespace))
+                {
+                    return new TypeMetadata(type.GetHashCode())
+                    {
+                        TypeName = type.Name,
+                        NamespaceName = type.GetNamespace(),
+                        EndOfTree = true,
+                        RootAssembly = assembly
+                    };
+                }
+            }
+
+            if (assembly.RegisteredTypes.Any(metadata => metadata.TypeHash.Equals(type.GetHashCode())))
             {
                 return new TypeMetadata(type.GetHashCode())
                 {
@@ -43,13 +57,13 @@ namespace ObjectBrowser.Shared.Extensions
         {
             return new List<KeyValuePair<string, string>>
             {
-              //new KeyValuePair<string, string>("Access:",data.Modifiers.AccessLevel.ToString()),
-              //new KeyValuePair<string, string>("IsSealed:",data.Modifiers.IsSealed.ToString()),
-              //new KeyValuePair<string, string>("IsAbstract:",data.Modifiers.IsAbstract.ToString()),
+              new KeyValuePair<string, string>("Access:",data.Modifiers.AccessLevel.ToString()),
+              new KeyValuePair<string, string>("IsSealed:",data.Modifiers.IsSealed.ToString()),
+              new KeyValuePair<string, string>("IsAbstract:",data.Modifiers.IsAbstract.ToString()),
               new KeyValuePair<string, string>("Namespace:",data.NamespaceName),
-              //new KeyValuePair<string, string>("Attributes:",string.Join(",",data.Attributes.Select(attribute => attribute.TypeName))),
-              //new KeyValuePair<string, string>("BaseType:",data.BaseType.TypeName),
-              //new KeyValuePair<string, string>("Implements:",string.Join(",",data.ImplementedInterfaces.Select(attribute => attribute.TypeName))),
+              new KeyValuePair<string, string>("Attributes:",string.Join(",",data.Attributes.Select(attribute => attribute.TypeName))),
+              new KeyValuePair<string, string>("BaseType:",data.BaseType.TypeName),
+              new KeyValuePair<string, string>("Implements:",string.Join(",",data.ImplementedInterfaces.Select(attribute => attribute.TypeName))),
             };
         }
 
@@ -57,12 +71,12 @@ namespace ObjectBrowser.Shared.Extensions
         {
             return new List<KeyValuePair<string, string>>
             {
-              //new KeyValuePair<string, string>("Access:",data.Modifiers.AccessLevel.ToString()),
-              //new KeyValuePair<string, string>("IsVirtual:",data.Modifiers.IsVirtual.ToString()),
-              //new KeyValuePair<string, string>("IsAbstract:",data.Modifiers.IsAbstract.ToString()),
-              //new KeyValuePair<string, string>("IsStatic:",data.Modifiers.IsStatic.ToString()),
+              new KeyValuePair<string, string>("Access:",data.Modifiers.AccessLevel.ToString()),
+              new KeyValuePair<string, string>("IsVirtual:",data.Modifiers.IsVirtual.ToString()),
+              new KeyValuePair<string, string>("IsAbstract:",data.Modifiers.IsAbstract.ToString()),
+              new KeyValuePair<string, string>("IsStatic:",data.Modifiers.IsStatic.ToString()),
               new KeyValuePair<string, string>("IsExtension:",data.Extension.ToString()),
-              //new KeyValuePair<string, string>("IsExtension:",string.Join(",",data.Parameters.Select(metadata => $"{metadata.TypeMetadata.TypeName} {metadata.Name}"))),             
+              new KeyValuePair<string, string>("Params:",string.Join(",",data.Parameters.Select(metadata => $"{metadata.TypeMetadata.TypeName} {metadata.Name}"))),
             };
         }
     }

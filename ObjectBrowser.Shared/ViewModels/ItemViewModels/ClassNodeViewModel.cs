@@ -21,6 +21,11 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
         public ClassNodeViewModel(TypeMetadata metadata)
         {
             _metadata = metadata;
+
+            if (_metadata.Methods == null)
+                _metadata = _metadata.RootAssembly.RegisteredTypes.First(typeMetadata =>
+                    typeMetadata.TypeHash == _metadata.TypeHash);
+
             Name = metadata.TypeName;
             Details = metadata.GetDetails();
         }

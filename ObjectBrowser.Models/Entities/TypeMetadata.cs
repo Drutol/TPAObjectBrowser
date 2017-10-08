@@ -36,8 +36,8 @@ namespace ObjectBrowser.Models.Entities
         public TypeMetadata DeclaringType { get;  set; }
         [DataMember]
         public TypeKind TypeKind{ get;  set; }
-        [DataMember]
 
+        [DataMember]
         public virtual List<TypeMetadata> Attributes{ get;  set; }
         [DataMember]
         public virtual List<TypeMetadata> ImplementedInterfaces{ get;  set; }
@@ -60,6 +60,8 @@ namespace ObjectBrowser.Models.Entities
         public int TypeHash { get; set; }
         [DataMember]
         public bool TypeReference { get; set; }
+        [DataMember]
+        public bool EndOfTree { get; set; }
 
         [IgnoreDataMember]
         public NamespaceMetadata Namespace { get; set; }
@@ -74,6 +76,8 @@ namespace ObjectBrowser.Models.Entities
         public TypeMetadata ParentTypeD { get; set; }
         [IgnoreDataMember]
         public TypeMetadata ParentTypeE { get; set; }
+        [IgnoreDataMember]
+        public TypeMetadata ParentTypeF { get; set; }
 
         [IgnoreDataMember]
         public MethodMetadata ParentMethod { get; set; }
@@ -120,6 +124,18 @@ namespace ObjectBrowser.Models.Entities
             modelBuilder.Entity<TypeMetadata>()
                 .HasMany(a => a.Fields)
                 .WithOne(r => r.ParentType);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasOne(t => t.Modifiers)
+                .WithOne(modifiers => modifiers.ParentType);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasOne(t => t.DeclaringType)
+                .WithOne(modifiers => modifiers.ParentTypeD);
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasOne(t => t.BaseType)
+                .WithOne(modifiers => modifiers.ParentTypeF);
         }
     }
 }

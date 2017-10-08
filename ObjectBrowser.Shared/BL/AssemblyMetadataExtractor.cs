@@ -23,6 +23,7 @@ namespace ObjectBrowser.Shared.BL
             var data = new AssemblyMetadata
             {
                 Name = assembly.ManifestModule.Name,
+                RestrictToNamespace = "ObjectBrowser",
             };
             data.Namespaces = assembly.GetTypes()
                 .Where(type => type.GetVisible())

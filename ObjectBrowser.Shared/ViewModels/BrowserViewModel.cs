@@ -34,18 +34,17 @@ namespace ObjectBrowser.Shared.ViewModels
         public async void NavigatedTo()
         {
             Loading = true;
-            await Task.Run(async () =>
+             await Task.Run(async () =>
             {
-                 //_metadata =
-                 //   _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
-                _metadata = await _dataStorage.Retrieve();
+                _metadata = _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
+                //_metadata = await _dataStorage.Retrieve();
 
                 Items = new List<NodeViewModelBase>
                 {
                     new AssemblyNodeViewModel(_metadata)
                 };
             });
-            //await _dataStorage.Save(_metadata);
+            await _dataStorage.Save(_metadata);
             Loading = false;
         }
 

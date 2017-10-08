@@ -19,5 +19,8 @@ namespace ObjectBrowser.Models.Entities
         public bool IsSealed { get; set; }
         [DataMember]
         public bool IsAbstract { get; set; }
+
+        [IgnoreDataMember]
+        public TypeMetadata ParentType { get; set; }
     }
 }

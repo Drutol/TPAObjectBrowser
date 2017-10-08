@@ -8,14 +8,14 @@ namespace ObjectBrowser.DataAccess.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.CreateTable(
                 name: "Assemblies",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    RestrictToNamespace = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,6 +111,9 @@ namespace ObjectBrowser.DataAccess.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    BaseTypeId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeclaringTypeId = table.Column<long>(type: "INTEGER", nullable: true),
+                    EndOfTree = table.Column<bool>(type: "INTEGER", nullable: false),
                     ModifiersId = table.Column<long>(type: "INTEGER", nullable: true),
                     NamespaceId = table.Column<long>(type: "INTEGER", nullable: true),
                     NamespaceName = table.Column<string>(type: "TEXT", nullable: true),
@@ -128,6 +131,18 @@ namespace ObjectBrowser.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TypeMetadatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TypeMetadatas_TypeMetadatas_BaseTypeId",
+                        column: x => x.BaseTypeId,
+                        principalTable: "TypeMetadatas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TypeMetadatas_TypeMetadatas_DeclaringTypeId",
+                        column: x => x.DeclaringTypeId,
+                        principalTable: "TypeMetadatas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TypeMetadatas_TypeModifiers_ModifiersId",
                         column: x => x.ModifiersId,
@@ -305,7 +320,8 @@ namespace ObjectBrowser.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_MethodMetadatas_ModifiersId",
                 table: "MethodMetadatas",
-                column: "ModifiersId");
+                column: "ModifiersId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MethodMetadatas_ParentTypeAId",
@@ -363,9 +379,22 @@ namespace ObjectBrowser.DataAccess.Migrations
                 column: "TypeMetadataId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TypeMetadatas_BaseTypeId",
+                table: "TypeMetadatas",
+                column: "BaseTypeId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TypeMetadatas_DeclaringTypeId",
+                table: "TypeMetadatas",
+                column: "DeclaringTypeId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TypeMetadatas_ModifiersId",
                 table: "TypeMetadatas",
-                column: "ModifiersId");
+                column: "ModifiersId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TypeMetadatas_NamespaceId",

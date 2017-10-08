@@ -35,7 +35,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override ICommand LoadChildrenCommand => new RelayCommand(() =>
         {
-            Children = _metadata.EnumFields.Select(metadata => new FieldNodeViewModel(metadata));
+            Children = _metadata.EnumFields?.Select(metadata => new FieldNodeViewModel(metadata));
         });
     }
 }

@@ -20,5 +20,8 @@ namespace ObjectBrowser.Models.Entities
         public bool IsAbstract { get; set; }
         [DataMember]
         public bool IsStatic { get; set; }
+
+        [IgnoreDataMember]
+        public MethodMetadata ParentMethod { get; set; }
     }
 }

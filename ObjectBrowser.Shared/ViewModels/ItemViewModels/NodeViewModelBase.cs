@@ -35,7 +35,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
             if (metadata.TypeReference)
             {
                 return TypeMetadataToViewModel(metadata.RootAssembly.RegisteredTypes.First(typeMetadata =>
-                    typeMetadata.GetHashCode() == metadata.GetHashCode()));
+                    typeMetadata.TypeHash == metadata.TypeHash));
             }
 
             switch (metadata.TypeKind)

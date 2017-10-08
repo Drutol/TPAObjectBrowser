@@ -18,6 +18,8 @@ namespace ObjectBrowser.Models.Entities
         public virtual List<NamespaceMetadata> Namespaces { get; set; }
         [DataMember]
         public virtual List<TypeMetadata> RegisteredTypes { get; set; } = new List<TypeMetadata>();
+        [DataMember]
+        public string RestrictToNamespace { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {

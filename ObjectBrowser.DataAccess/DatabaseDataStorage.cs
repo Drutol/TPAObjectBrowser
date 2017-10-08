@@ -27,8 +27,9 @@ namespace ObjectBrowser.DataAccess
         {
             using (var db = new AssemblyDatabaseContext())
             {
-                if(db.Assemblies.Any())
-                    db.Assemblies.Remove(db.Assemblies.First());
+                db.Database.EnsureDeleted();
+                await db.SaveChangesAsync();
+                db.Database.Migrate();
                 db.Assemblies.Add(assembly);
                 await db.SaveChangesAsync();
             }
@@ -38,10 +39,83 @@ namespace ObjectBrowser.DataAccess
         {
             using (var db = new AssemblyDatabaseContext())
             {
-                return await db.Assemblies
+                var asm = await db.Assemblies
                     .AsNoTracking()
                     .Include(metadata => metadata.RegisteredTypes)
-                    //type
+                    //type Registers
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Attributes)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.EnumFields)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Fields)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.NestedTypes)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Modifiers)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.BaseType)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.DeclaringType)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.GenericArguments)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.ImplementedInterfaces)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Namespace)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.GenericArguments)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.RootAssembly)
+                    //Methods
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.Modifiers)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.RootAssembly)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.Parameters)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.ReturnType)
+                    //Constructors
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.Modifiers)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.RootAssembly)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.Parameters)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.ReturnType)
+                    //Methods - Parameters
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.Parameters)
+                    .ThenInclude(metadata => metadata.TypeMetadata)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.Parameters)
+                    .ThenInclude(metadata => metadata.MethodMetadata)
+                    //Props
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Properties)
+                    .ThenInclude(metadata => metadata.RootAssembly)
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Properties)
+                    .ThenInclude(metadata => metadata.TypeMetadata)
+                    //Fields
+                    .Include(metadata => metadata.RegisteredTypes)
+                    .ThenInclude(metadata => metadata.Fields)
+                    .ThenInclude(metadata => metadata.TypeMetadata)          
+                    //type Inner
                     .Include(metadata => metadata.Namespaces)
                     .ThenInclude(metadata => metadata.Types)
                     .ThenInclude(metadata => metadata.Attributes)
@@ -60,12 +134,12 @@ namespace ObjectBrowser.DataAccess
                     .Include(metadata => metadata.Namespaces)
                     .ThenInclude(metadata => metadata.Types)
                     .ThenInclude(metadata => metadata.Modifiers)
-                    //.Include(metadata => metadata.Namespaces)
-                    //.ThenInclude(metadata => metadata.Types)
-                    //.ThenInclude(metadata => metadata.BaseType)
-                    //.Include(metadata => metadata.Namespaces)
-                    //.ThenInclude(metadata => metadata.Types)
-                    //.ThenInclude(metadata => metadata.DeclaringType)
+                    .Include(metadata => metadata.Namespaces)
+                    .ThenInclude(metadata => metadata.Types)
+                    .ThenInclude(metadata => metadata.BaseType)
+                    .Include(metadata => metadata.Namespaces)
+                    .ThenInclude(metadata => metadata.Types)
+                    .ThenInclude(metadata => metadata.DeclaringType)
                     .Include(metadata => metadata.Namespaces)
                     .ThenInclude(metadata => metadata.Types)
                     .ThenInclude(metadata => metadata.GenericArguments)
@@ -97,6 +171,23 @@ namespace ObjectBrowser.DataAccess
                     .Include(metadata => metadata.Namespaces)
                     .ThenInclude(metadata => metadata.Types)
                     .ThenInclude(metadata => metadata.Methods)
+                    .ThenInclude(metadata => metadata.ReturnType)            
+                    //Constructors
+                    .Include(metadata => metadata.Namespaces)
+                    .ThenInclude(metadata => metadata.Types)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.Modifiers)
+                    .Include(metadata => metadata.Namespaces)
+                    .ThenInclude(metadata => metadata.Types)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.RootAssembly)
+                    .Include(metadata => metadata.Namespaces)
+                    .ThenInclude(metadata => metadata.Types)
+                    .ThenInclude(metadata => metadata.Constructors)
+                    .ThenInclude(metadata => metadata.Parameters)
+                    .Include(metadata => metadata.Namespaces)
+                    .ThenInclude(metadata => metadata.Types)
+                    .ThenInclude(metadata => metadata.Constructors)
                     .ThenInclude(metadata => metadata.ReturnType)   
                     //Methods - Parameters
                     .Include(metadata => metadata.Namespaces)
@@ -124,6 +215,10 @@ namespace ObjectBrowser.DataAccess
                     .ThenInclude(metadata => metadata.Fields)
                     .ThenInclude(metadata => metadata.TypeMetadata)     
                     .FirstAsync();
+
+                asm.RegisteredTypes = asm.RegisteredTypes.Where(metadata => !metadata.TypeReference && !metadata.EndOfTree).ToList();
+
+                return asm;
             }
         }
     }

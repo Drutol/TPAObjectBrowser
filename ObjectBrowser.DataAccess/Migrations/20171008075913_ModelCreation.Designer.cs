@@ -11,7 +11,7 @@ using System;
 namespace ObjectBrowser.DataAccess.Migrations
 {
     [DbContext(typeof(AssemblyDatabaseContext))]
-    [Migration("20171007154814_ModelCreation")]
+    [Migration("20171008075913_ModelCreation")]
     partial class ModelCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,8 @@ namespace ObjectBrowser.DataAccess.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("RestrictToNamespace");
 
                     b.HasKey("Id");
 
@@ -93,7 +95,8 @@ namespace ObjectBrowser.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModifiersId");
+                    b.HasIndex("ModifiersId")
+                        .IsUnique();
 
                     b.HasIndex("ParentTypeAId");
 
@@ -191,6 +194,12 @@ namespace ObjectBrowser.DataAccess.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<long?>("BaseTypeId");
+
+                    b.Property<long?>("DeclaringTypeId");
+
+                    b.Property<bool>("EndOfTree");
+
                     b.Property<long?>("ModifiersId");
 
                     b.Property<long?>("NamespaceId");
@@ -219,7 +228,14 @@ namespace ObjectBrowser.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModifiersId");
+                    b.HasIndex("BaseTypeId")
+                        .IsUnique();
+
+                    b.HasIndex("DeclaringTypeId")
+                        .IsUnique();
+
+                    b.HasIndex("ModifiersId")
+                        .IsUnique();
 
                     b.HasIndex("NamespaceId");
 
@@ -275,8 +291,8 @@ namespace ObjectBrowser.DataAccess.Migrations
             modelBuilder.Entity("ObjectBrowser.Models.Entities.MethodMetadata", b =>
                 {
                     b.HasOne("ObjectBrowser.Models.Entities.MethodModifiers", "Modifiers")
-                        .WithMany()
-                        .HasForeignKey("ModifiersId");
+                        .WithOne("ParentMethod")
+                        .HasForeignKey("ObjectBrowser.Models.Entities.MethodMetadata", "ModifiersId");
 
                     b.HasOne("ObjectBrowser.Models.Entities.TypeMetadata", "ParentTypeA")
                         .WithMany("Methods")
@@ -334,9 +350,17 @@ namespace ObjectBrowser.DataAccess.Migrations
 
             modelBuilder.Entity("ObjectBrowser.Models.Entities.TypeMetadata", b =>
                 {
+                    b.HasOne("ObjectBrowser.Models.Entities.TypeMetadata", "BaseType")
+                        .WithOne("ParentTypeF")
+                        .HasForeignKey("ObjectBrowser.Models.Entities.TypeMetadata", "BaseTypeId");
+
+                    b.HasOne("ObjectBrowser.Models.Entities.TypeMetadata", "DeclaringType")
+                        .WithOne("ParentTypeD")
+                        .HasForeignKey("ObjectBrowser.Models.Entities.TypeMetadata", "DeclaringTypeId");
+
                     b.HasOne("ObjectBrowser.Models.Entities.TypeModifiers", "Modifiers")
-                        .WithMany()
-                        .HasForeignKey("ModifiersId");
+                        .WithOne("ParentType")
+                        .HasForeignKey("ObjectBrowser.Models.Entities.TypeMetadata", "ModifiersId");
 
                     b.HasOne("ObjectBrowser.Models.Entities.NamespaceMetadata", "Namespace")
                         .WithMany("Types")

@@ -46,6 +46,10 @@ namespace ObjectBrowser.Models.Entities
             modelBuilder.Entity<MethodMetadata>()
                 .HasMany(a => a.Parameters)
                 .WithOne(r => r.MethodMetadata);
+
+            modelBuilder.Entity<MethodMetadata>()
+                .HasOne(t => t.Modifiers)
+                .WithOne(modifiers => modifiers.ParentMethod);
         }
     }
 }
