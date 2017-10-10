@@ -43,6 +43,7 @@
     <Compile Include="IAssemblyMetadataExtractor.cs" />
     <Compile Include="IDataStorage.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="IMessageBoxProvider.cs" />
     <Compile Include="IMethodMetadataExtractor.cs" />
     <Compile Include="INamespaceMetadataExtractor.cs" />
     <Compile Include="ITypeMetadataExtractor.cs" />

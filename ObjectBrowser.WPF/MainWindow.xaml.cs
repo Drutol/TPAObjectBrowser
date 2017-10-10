@@ -25,14 +25,13 @@ namespace ObjectBrowser.WPF
     {
         public MainWindow()
         {
-            ResourceLocator.RegisterDependencies();
             InitializeComponent();
             Loaded += OnLoaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            ViewModelLocator.BrowserViewModel.NavigatedTo();
+
         }
 
         private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

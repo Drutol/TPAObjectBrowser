@@ -20,33 +20,43 @@ namespace ObjectBrowser.Shared.ViewModels
         private readonly IAssemblyMetadataExtractor _assemblyMetadataExtractor;
         private readonly IDataStorage _dataStorage;
         private readonly ILogger _logger;
+        private readonly IMessageBoxProvider _messageBoxProvider;
         private List<NodeViewModelBase> _items;
         private bool _loading;
         private NodeViewModelBase _nodeViewModelBase;
         private List<KeyValuePair<string, string>> _selectedItemDetails;
         private AssemblyMetadata _metadata;
 
-        public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor, IDataStorage dataStorage, ILogger logger)
+        public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor, IDataStorage dataStorage, ILogger logger, IMessageBoxProvider messageBoxProvider)
         {
             _assemblyMetadataExtractor = assemblyMetadataExtractor;
             _dataStorage = dataStorage;
             _logger = logger;
+            _messageBoxProvider = messageBoxProvider;
         }
 
-        public async void NavigatedTo()
+        public async Task LoadAssembly(string asmPath)
         {
             Loading = true;
-            await Task.Run(async () =>
+            try
             {
-                //_metadata = _assemblyMetadataExtractor.Extract(Assembly.GetAssembly(typeof(ServiceA)));
-                _metadata = await _dataStorage.Retrieve();
-
-                Items = new List<NodeViewModelBase>
+                //var asm = Assembly.LoadFrom(asmPath);
+                var asm = Assembly.GetAssembly(typeof(ServiceA));
+                await Task.Run(async () =>
                 {
-                    new AssemblyNodeViewModel(_metadata)
-                };
-            });
-            await _dataStorage.Save(_metadata);
+                    _metadata = _assemblyMetadataExtractor.Extract(asm);
+                    Items = new List<NodeViewModelBase>
+                    {
+                        new AssemblyNodeViewModel(_metadata)
+                    };
+                });
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
             Loading = false;
         }
 

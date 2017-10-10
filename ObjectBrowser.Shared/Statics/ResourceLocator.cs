@@ -42,11 +42,11 @@ namespace ObjectBrowser.Shared.Statics
 
     public static class ResourceLocator
     {
+        public delegate void AdapterRegistration(ContainerBuilder builder);
+
         private static ILifetimeScope _container;
 
-
-
-        public static void RegisterDependencies()
+        public static void RegisterDependencies(AdapterRegistration adapterDelegate)
         {
             var builder = new ContainerBuilder();
 
@@ -76,6 +76,7 @@ namespace ObjectBrowser.Shared.Statics
             builder.RegisterType<MethodMetadataExtractor>().As<IMethodMetadataExtractor>().SingleInstance();
             builder.RegisterType<BrowserViewModel>().SingleInstance();
 
+            adapterDelegate(builder);
 
             _container = builder.Build().BeginLifetimeScope();
 
@@ -91,5 +92,7 @@ namespace ObjectBrowser.Shared.Statics
         public static INamespaceMetadataExtractor NamespaceMetadataExtractor => _container.Resolve<INamespaceMetadataExtractor>();
         public static ITypeMetadataExtractor TypeMetadataExtractor => _container.Resolve<ITypeMetadataExtractor>();
         public static IMethodMetadataExtractor MethodMetadataExtractor => _container.Resolve<IMethodMetadataExtractor>();
+
+        public static BrowserViewModel BrowserViewModel => _container.Resolve<BrowserViewModel>();
     }
 }
