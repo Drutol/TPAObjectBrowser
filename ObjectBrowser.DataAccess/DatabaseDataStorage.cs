@@ -216,7 +216,7 @@ namespace ObjectBrowser.DataAccess
                     .ThenInclude(metadata => metadata.TypeMetadata)     
                     .FirstAsync();
 
-                asm.RegisteredTypes = asm.RegisteredTypes.Where(metadata => !metadata.TypeReference && !metadata.EndOfTree).ToList();
+                //asm.RegisteredTypes = asm.RegisteredTypes.Where(metadata => !metadata.TypeReference && !metadata.EndOfTree).ToList();
 
                 return asm;
             }

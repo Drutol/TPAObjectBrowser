@@ -23,7 +23,7 @@ namespace ObjectBrowser.Shared.BL
             var data = new AssemblyMetadata
             {
                 Name = assembly.ManifestModule.Name,
-                RestrictToNamespace = limitToRootNamepsace ? assembly.GetTypes().First().Namespace : null
+                RestrictToNamespace = limitToRootNamepsace ? GetRootNamespace(assembly.GetTypes().First().Namespace) : null
             };
             data.Namespaces = assembly.GetTypes()
                 .Where(type => type.GetVisible())
@@ -33,6 +33,15 @@ namespace ObjectBrowser.Shared.BL
                 .ToList();
 
             return data;
+
+        }
+
+        private string GetRootNamespace(string source)
+        {
+            var pos = source.IndexOf('.');
+            if (pos != -1)
+                source = source.Substring(0, pos);
+            return source;
 
         }
 
