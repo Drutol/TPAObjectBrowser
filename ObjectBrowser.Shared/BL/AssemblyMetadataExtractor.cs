@@ -9,7 +9,7 @@ using ObjectBrowser.Shared.Extensions;
 
 namespace ObjectBrowser.Shared.BL
 {
-    public class AssemblyMetadataExtractor : IAssemblyMetadataExtractor
+    internal class AssemblyMetadataExtractor : IAssemblyMetadataExtractor
     {
         private readonly INamespaceMetadataExtractor _namespaceMetadataExtractor;
 

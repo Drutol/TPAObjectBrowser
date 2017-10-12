@@ -35,7 +35,6 @@ namespace ObjectBrowser.Shared.Statics
             _compositionContainer.ComposeParts(this);
             _compositionContainer.SatisfyImportsOnce(this);
         }
-
     }
 
     public static class ResourceLocator
@@ -85,11 +84,6 @@ namespace ObjectBrowser.Shared.Statics
         public static ILifetimeScope ObtainScope() => _container.BeginLifetimeScope();
 
         public static ILogger Logger => _container.Resolve<ILogger>();
-
-        public static IAssemblyMetadataExtractor AssemblyMetadataExtractor => _container.Resolve<IAssemblyMetadataExtractor>();
-        public static INamespaceMetadataExtractor NamespaceMetadataExtractor => _container.Resolve<INamespaceMetadataExtractor>();
-        public static ITypeMetadataExtractor TypeMetadataExtractor => _container.Resolve<ITypeMetadataExtractor>();
-        public static IMethodMetadataExtractor MethodMetadataExtractor => _container.Resolve<IMethodMetadataExtractor>();
 
         public static BrowserViewModel BrowserViewModel => _container.Resolve<BrowserViewModel>();
     }

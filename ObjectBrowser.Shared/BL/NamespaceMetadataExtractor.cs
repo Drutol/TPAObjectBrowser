@@ -7,7 +7,7 @@ using ObjectBrowser.Models.Entities;
 
 namespace ObjectBrowser.Shared.BL
 {
-    public class NamespaceMetadataExtractor : INamespaceMetadataExtractor
+    internal class NamespaceMetadataExtractor : INamespaceMetadataExtractor
     {
         private readonly ITypeMetadataExtractor _typeMetadataExtractor;
 

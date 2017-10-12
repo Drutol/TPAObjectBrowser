@@ -18,9 +18,19 @@ namespace ObjectBrowser.WPF
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
-            ResourceLocator.RegisterDependencies(AdapterDelegate);
+            try
+            {
+                ResourceLocator.RegisterDependencies(AdapterDelegate);
+            }
+            catch (Exception)
+            {
+                await new MessageBoxProvider().ShowMessageBoxOk("Unable to find one or more plugins, terminating.",
+                    "Error");
+                Current.Shutdown();
+            }
+
 
             base.OnStartup(e);
         }

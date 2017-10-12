@@ -53,7 +53,7 @@ namespace ObjectBrowser.Shared.Extensions
             return null;
         }
 
-        public static List<KeyValuePair<string, string>> GetDetails(this TypeMetadata data)
+        internal static List<KeyValuePair<string, string>> GetDetails(this TypeMetadata data)
         {
             return new List<KeyValuePair<string, string>>
             {
@@ -67,7 +67,7 @@ namespace ObjectBrowser.Shared.Extensions
             };
         }
 
-        public static List<KeyValuePair<string, string>> GetDetails(this MethodMetadata data)
+        internal static List<KeyValuePair<string, string>> GetDetails(this MethodMetadata data)
         {
             return new List<KeyValuePair<string, string>>
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,23 @@ namespace ObjectBrowser.FileLogger
             }
 
             _trace.Clear();
+        }
+
+        [Conditional("DEBUG")]
+        internal void GetLogs(List<string> output)
+        {
+            var fs = File.ReadLines(@"trace.txt");
+            foreach (var f in fs)
+            {
+                output.Add(f);
+            }
+
+        }
+
+        [Conditional("DEBUG")]
+        internal void GetFirstLogMessage(ref string output)
+        {
+            output = _trace.First().message;
         }
     }
 }

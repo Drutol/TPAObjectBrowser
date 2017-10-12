@@ -7,9 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ObjectBrowser.DatabaseLogger
 {
-
-
-    public class LogDatabaseContext : DbContext
+    internal class LogDatabaseContext : DbContext
     {
         public DbSet<Log> Logs { get; set; }
 

@@ -11,7 +11,7 @@ using ObjectBrowser.Shared.Extensions;
 
 namespace ObjectBrowser.Shared.BL
 {
-    public class MethodMetadataExtractor : IMethodMetadataExtractor
+    internal class MethodMetadataExtractor : IMethodMetadataExtractor
     {
         public MethodMetadata Extract(MethodBase method, AssemblyMetadata rootAssembly, ITypeMetadataExtractor extractor)
         {
@@ -55,8 +55,6 @@ namespace ObjectBrowser.Shared.BL
                 return null;
 
             return methodInfo.ReturnType.EmitReference(rootAssembly) ?? extractor.Extract(methodInfo.ReturnType, rootAssembly);
-
-
         }
 
         private bool EmitExtension(MethodBase method)

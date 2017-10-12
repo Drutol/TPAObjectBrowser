@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ObjectBrowser.DatabaseLogger
 {
-    public class Log
+    internal class Log
     {
         public long Id { get; set; }
 

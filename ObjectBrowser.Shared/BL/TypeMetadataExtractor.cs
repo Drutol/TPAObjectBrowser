@@ -10,7 +10,7 @@ using ObjectBrowser.Shared.Extensions;
 
 namespace ObjectBrowser.Shared.BL
 {
-    public class TypeMetadataExtractor : ITypeMetadataExtractor
+    internal class TypeMetadataExtractor : ITypeMetadataExtractor
     {
         private readonly IMethodMetadataExtractor _methodMetadataExtractor;
 
