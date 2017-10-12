@@ -26,6 +26,7 @@ namespace ObjectBrowser.Shared.ViewModels
         private NodeViewModelBase _nodeViewModelBase;
         private List<KeyValuePair<string, string>> _selectedItemDetails;
         private AssemblyMetadata _metadata;
+        private bool _limitToRootNamespace = true;
 
         public BrowserViewModel(IAssemblyMetadataExtractor assemblyMetadataExtractor, IDataStorage dataStorage, ILogger logger, IMessageBoxProvider messageBoxProvider)
         {
@@ -40,24 +41,44 @@ namespace ObjectBrowser.Shared.ViewModels
             Loading = true;
             try
             {
-                //var asm = Assembly.LoadFrom(asmPath);
-                var asm = Assembly.GetAssembly(typeof(ServiceA));
-                await Task.Run(async () =>
-                {
-                    _metadata = _assemblyMetadataExtractor.Extract(asm);
-                    Items = new List<NodeViewModelBase>
-                    {
-                        new AssemblyNodeViewModel(_metadata)
-                    };
-                });
-
+                var asm = Assembly.LoadFrom(asmPath);
+                await LoadAssembly(asm);
             }
             catch (Exception e)
             {
-
+                await _messageBoxProvider.ShowMessageBoxOk("Error during assembly model creation", "Error");
             }
 
             Loading = false;
+        }
+
+        private async Task LoadAssembly(Assembly asm)
+        {
+            await Task.Run(() =>
+            {
+                _metadata = _assemblyMetadataExtractor.Extract(asm,LimitToRootNamespace);
+                LoadAssembly(_metadata);
+            });
+        }
+
+        private void LoadAssembly(AssemblyMetadata asm)
+        {
+            Items = new List<NodeViewModelBase>
+            {
+                new AssemblyNodeViewModel(asm)
+            };
+        }
+
+        #region Properties
+
+        public bool LimitToRootNamespace
+        {
+            get { return _limitToRootNamespace; }
+            set
+            {
+                _limitToRootNamespace = value; 
+                RaisePropertyChanged();
+            }
         }
 
         public NodeViewModelBase NodeViewModelBase
@@ -128,5 +149,69 @@ namespace ObjectBrowser.Shared.ViewModels
                 }
 
             });
+
+        public ICommand SaveAssemblyCommand => new RelayCommand(async () =>
+        {
+            if (_metadata == null)
+            {
+                await _messageBoxProvider.ShowMessageBoxOk("You have to load assembly first in order to save it.",
+                    "No loaded asembly.");
+                return;
+            }
+
+            Loading = true;
+            await _dataStorage.Save(_metadata);
+            Loading = false;
+
+            await _messageBoxProvider.ShowMessageBoxOk("Model has been saved successfully.",
+                "Success");
+        });
+
+        public ICommand LoadAssemblyCommand => new RelayCommand(async () =>
+        {
+            Loading = true;
+            try
+            {
+                _metadata = await _dataStorage.Retrieve();
+                Items = new List<NodeViewModelBase>
+                {
+                    new AssemblyNodeViewModel(_metadata)
+                };
+            }
+            catch (Exception e)
+            {
+                await _messageBoxProvider.ShowMessageBoxOk("Couldn't find any saved assembly metadata.",
+                    "Assembly not found.");
+            }
+            finally
+            {
+                Loading = false;
+            }
+        });
+
+        public ICommand LoadTestAssemblyCommand => new RelayCommand(async () =>
+        {
+            Loading = true;
+            try
+            {
+                var asm = Assembly.GetAssembly(typeof(ServiceA));
+                await LoadAssembly(asm);
+            }
+            catch (Exception e)
+            {
+                await _messageBoxProvider.ShowMessageBoxOk("Couldn't find any saved assembly metadata.",
+                    "Assembly not found.");
+            }
+            finally
+            {
+                Loading = false;
+            }
+        });
+
+
+        #endregion
+
+
+
     }
 }

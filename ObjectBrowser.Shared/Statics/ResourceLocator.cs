@@ -29,8 +29,6 @@ namespace ObjectBrowser.Shared.Statics
 
         public Importer()
         {
-
-            //var asm = Assembly.GetAssembly(typeof(FileDataStorage));
             AggregateCatalog catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new ApplicationCatalog());
             _compositionContainer = new CompositionContainer(catalog);

@@ -18,12 +18,12 @@ namespace ObjectBrowser.Shared.BL
             _namespaceMetadataExtractor = namespaceMetadataExtractor;
         }
 
-        public AssemblyMetadata Extract(Assembly assembly)
+        public AssemblyMetadata Extract(Assembly assembly, bool limitToRootNamepsace)
         {
             var data = new AssemblyMetadata
             {
                 Name = assembly.ManifestModule.Name,
-                RestrictToNamespace = "ObjectBrowser",
+                RestrictToNamespace = limitToRootNamepsace ? assembly.GetTypes().First().Namespace : null
             };
             data.Namespaces = assembly.GetTypes()
                 .Where(type => type.GetVisible())

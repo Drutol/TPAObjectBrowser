@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using ObjectBrowser.Shared.Statics;
 using ObjectBrowser.Shared.ViewModels.ItemViewModels;
 using ObjectBrowser.WPF.Statics;
@@ -47,6 +48,23 @@ namespace ObjectBrowser.WPF
             
             ViewModelLocator.BrowserViewModel.ListViewItemSelectedCommand.Execute(
                 ListView.SelectedItem as NodeViewModelBase);
+        }
+
+        private async void BrowseButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            var picker = new OpenFileDialog();
+
+
+
+            // Set filter for file extension and default file extension 
+            picker.DefaultExt = ".dll";
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            if (picker.ShowDialog() == true)
+            {
+                await ViewModelLocator.BrowserViewModel.LoadAssembly(picker.FileName);
+            }
         }
     }
 }

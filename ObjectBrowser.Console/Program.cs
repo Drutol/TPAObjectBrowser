@@ -26,13 +26,9 @@ namespace ObjectBrowser.Console
 
             //System.Console.WriteLine("Input assembly path you'd like to load:");
             //var path = System.Console.ReadLine();
-            await _viewModel.LoadAssembly("");
-            
-            WriteNodes(_viewModel.Items);
 
             _viewModel.PropertyChanged += ViewModelOnPropertyChanged;
-            System.Console.WriteLine("Write number of item to exapnd it, `back` to go to its parent and `quit` to leave.");
-
+            _viewModel.LoadTestAssemblyCommand.Execute(null);
 
             while (true)
             {
@@ -79,6 +75,11 @@ namespace ObjectBrowser.Console
             {
                 System.Console.WriteLine($"==={_viewModel.NodeViewModelBase.Kind.ToString()} {_viewModel.NodeViewModelBase.Name}===");
                 WriteNodes(_viewModel.NodeViewModelBase.Children);
+            }
+            else if(propertyChangedEventArgs.PropertyName == nameof(BrowserViewModel.Items))
+            {
+                System.Console.WriteLine("Write number of item to exapnd it, `back` to go to its parent and `quit` to leave.");
+                WriteNodes(_viewModel.Items);
             }
         }
 

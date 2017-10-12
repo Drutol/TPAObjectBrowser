@@ -5,6 +5,6 @@ namespace ObjectBrowser.Shared.BL
 {
     public interface IAssemblyMetadataExtractor
     {
-        AssemblyMetadata Extract(Assembly assembly);
+        AssemblyMetadata Extract(Assembly assembly, bool limitToRootNamepsace);
     }
 }

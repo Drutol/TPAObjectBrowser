@@ -16,7 +16,11 @@
             <ColumnDefinition Width="*" MinWidth="400" />
         </Grid.ColumnDefinitions>
         <Grid Background="#1d1d1d">
-            <TreeView x:Name="TreeView" Grid.Column="0" Background="Transparent" RenderTransformOrigin="0.5,0.5"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TreeView Grid.Row="0" x:Name="TreeView" Grid.Column="0" Background="Transparent" RenderTransformOrigin="0.5,0.5"
                       ItemsSource="{Binding Items}" SelectedItemChanged="TreeView_OnSelectedItemChanged">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
@@ -36,6 +40,18 @@
                     </Style>
                 </TreeView.ItemContainerStyle>
             </TreeView>
+            <StackPanel Grid.Row="1" Orientation="Vertical" >
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Padding="2" Margin="2,0" Content="Browse assembly" Click="BrowseButtonOnClick"/>
+                    <Button Padding="2"  Margin="2,0" Content="Save assembly model" Command="{Binding SaveAssemblyCommand}"/>
+                </StackPanel>    
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Padding="2"  Margin="2,0" Content="Load assembly model" Command="{Binding LoadAssemblyCommand}"/>
+                    <Button Padding="2"  Margin="2,0" Content="Load test assembly" Command="{Binding LoadTestAssemblyCommand}"/>
+                </StackPanel>
+                <CheckBox Margin="5" Content="Limit to root namespace." Foreground="White" IsChecked="{Binding LimitToRootNamespace,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></CheckBox>
+
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1" Background="#3d3d3d">
             <Grid HorizontalAlignment="Stretch"  Visibility="{Binding ElementName=EmptyNotice,Path=Visibility,Converter={StaticResource VisibilityInverterConverter}}">

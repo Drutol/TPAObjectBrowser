@@ -20,6 +20,10 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
         public AssemblyNodeViewModel(AssemblyMetadata metadata)
         {
             _metadata = metadata;
+            Details = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("Found types:", _metadata.RegisteredTypes.Count.ToString())
+            };
         }
 
         public override IEnumerable<NodeViewModelBase> Children
