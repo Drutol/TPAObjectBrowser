@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Autofac;
 using ObjectBrowser.Models.Entities;
+using ObjectBrowser.Shared.ViewModels.ItemViewModels;
 
 namespace ObjectBrowser.Shared.Extensions
 {
@@ -53,31 +55,14 @@ namespace ObjectBrowser.Shared.Extensions
             return null;
         }
 
-        internal static List<KeyValuePair<string, string>> GetDetails(this TypeMetadata data)
+        internal static List<KeyValuePair<string, string>> ToKeyValuePairList(this IEnumerable<(string,string)> tuples)
         {
-            return new List<KeyValuePair<string, string>>
-            {
-              new KeyValuePair<string, string>("Access:",data.Modifiers.AccessLevel.ToString()),
-              new KeyValuePair<string, string>("IsSealed:",data.Modifiers.IsSealed.ToString()),
-              new KeyValuePair<string, string>("IsAbstract:",data.Modifiers.IsAbstract.ToString()),
-              new KeyValuePair<string, string>("Namespace:",data.NamespaceName),
-              new KeyValuePair<string, string>("Attributes:",string.Join(",",data.Attributes.Select(attribute => attribute.TypeName))),
-              new KeyValuePair<string, string>("BaseType:",data.BaseType.TypeName),
-              new KeyValuePair<string, string>("Implements:",string.Join(",",data.ImplementedInterfaces.Select(attribute => attribute.TypeName))),
-            };
+            return tuples.Select(t => new KeyValuePair<string, string>(t.Item1, t.Item2)).ToList();
         }
 
-        internal static List<KeyValuePair<string, string>> GetDetails(this MethodMetadata data)
+        internal static T ResolveWithParameter<T, TParam>(this ILifetimeScope scope, TParam parameter)
         {
-            return new List<KeyValuePair<string, string>>
-            {
-              new KeyValuePair<string, string>("Access:",data.Modifiers.AccessLevel.ToString()),
-              new KeyValuePair<string, string>("IsVirtual:",data.Modifiers.IsVirtual.ToString()),
-              new KeyValuePair<string, string>("IsAbstract:",data.Modifiers.IsAbstract.ToString()),
-              new KeyValuePair<string, string>("IsStatic:",data.Modifiers.IsStatic.ToString()),
-              new KeyValuePair<string, string>("IsExtension:",data.Extension.ToString()),
-              new KeyValuePair<string, string>("Params:",string.Join(",",data.Parameters.Select(metadata => $"{metadata.TypeMetadata.TypeName} {metadata.Name}"))),
-            };
+            return scope.Resolve<T>(new TypedParameter(typeof(TParam), parameter));
         }
     }
 }

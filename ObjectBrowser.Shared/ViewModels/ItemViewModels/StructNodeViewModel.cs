@@ -7,6 +7,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Models.Enums;
+using ObjectBrowser.Shared.Extensions;
+using ObjectBrowser.Shared.Statics;
 
 namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 {
@@ -37,7 +39,12 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
         {
             var items = new List<NodeViewModelBase>();
 
-            items.AddRange(_metadata.Methods.Select(metadata => new MethodNodeViewModel(metadata)));
+            using (var dependencyScope = ResourceLocator.ObtainScope())
+            {
+                items.AddRange(_metadata.Methods.Select(metadata =>
+                    dependencyScope.ResolveWithParameter<MethodNodeViewModel, MethodMetadata>(metadata)));
+            }
+
             items.AddRange(_metadata.Properties.Select(metadata => new PropertyNodeViewModel(metadata)));
             items.AddRange(_metadata.NestedTypes.Select(TypeMetadataToViewModel));
 

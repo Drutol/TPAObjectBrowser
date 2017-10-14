@@ -7,6 +7,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Models.Enums;
+using ObjectBrowser.Shared.Extensions;
+using ObjectBrowser.Shared.Statics;
 
 namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 {
@@ -36,7 +38,11 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 
         public override ICommand LoadChildrenCommand => new RelayCommand(() =>
         {
-            Children = _metadata.Methods.Select(metadata => new MethodNodeViewModel(metadata));
+            using (var dependencyScope = ResourceLocator.ObtainScope())
+            {
+                Children = _metadata.Methods.Select(metadata =>
+                    dependencyScope.ResolveWithParameter<MethodNodeViewModel, MethodMetadata>(metadata));
+            }
         });
     }
 }

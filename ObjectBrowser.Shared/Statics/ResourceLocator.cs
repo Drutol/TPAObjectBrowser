@@ -14,6 +14,7 @@ using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Models.Enums;
 using ObjectBrowser.Shared.BL;
 using ObjectBrowser.Shared.ViewModels;
+using ObjectBrowser.Shared.ViewModels.ItemViewModels;
 
 namespace ObjectBrowser.Shared.Statics
 {
@@ -71,7 +72,11 @@ namespace ObjectBrowser.Shared.Statics
             builder.RegisterType<NamespaceMetadataExtractor>().As<INamespaceMetadataExtractor>().SingleInstance();
             builder.RegisterType<TypeMetadataExtractor>().As<ITypeMetadataExtractor>().SingleInstance();
             builder.RegisterType<MethodMetadataExtractor>().As<IMethodMetadataExtractor>().SingleInstance();
+            builder.RegisterType<MetadataDetailsProvider>().As<IMetadataDetailsProvider>().SingleInstance();
             builder.RegisterType<BrowserViewModel>().SingleInstance();
+
+            builder.RegisterType<ClassNodeViewModel>();
+            builder.RegisterType<MethodNodeViewModel>();
 
             adapterDelegate(builder);
 

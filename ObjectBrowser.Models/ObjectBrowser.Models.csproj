@@ -114,6 +114,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConfiguration.cs" />
     <Compile Include="Entities\AssemblyMetadata.cs" />
     <Compile Include="Entities\EnumFieldMetadata.cs" />
     <Compile Include="Entities\FieldMetadata.cs" />

@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BL\AssemblyMetadataExtractor.cs" />
+    <Compile Include="BL\MetadataDetailsProvider.cs" />
     <Compile Include="BL\MethodMetadataExtractor.cs" />
     <Compile Include="BL\NamespaceMetadataExtractor.cs" />
     <Compile Include="BL\TypeMetadataExtractor.cs" />
@@ -124,6 +125,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

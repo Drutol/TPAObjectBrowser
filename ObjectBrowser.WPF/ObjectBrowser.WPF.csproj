@@ -93,6 +93,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
@@ -202,6 +205,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="configuration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -215,10 +221,6 @@
     <ProjectReference Include="..\ObjectBrowser.DataAccess\ObjectBrowser.DatabaseStorage.csproj">
       <Project>{8fd161b8-fc52-4ad0-8031-b691161434ff}</Project>
       <Name>ObjectBrowser.DatabaseStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ObjectBrowser.DatabaseLogger\ObjectBrowser.DatabaseLogger.csproj">
-      <Project>{4b139801-fdfa-42ab-bf56-d53cc9275c2e}</Project>
-      <Name>ObjectBrowser.DatabaseLogger</Name>
     </ProjectReference>
     <ProjectReference Include="..\ObjectBrowser.FileStorage\ObjectBrowser.FileStorage.csproj">
       <Project>{5b91852d-15b0-48ef-828b-b9c47e96a27c}</Project>

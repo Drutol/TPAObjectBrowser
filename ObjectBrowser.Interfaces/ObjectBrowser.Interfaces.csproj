@@ -32,6 +32,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +47,7 @@
     <Compile Include="IDataStorage.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IMessageBoxProvider.cs" />
+    <Compile Include="IMetadataDetailsProvider.cs" />
     <Compile Include="IMethodMetadataExtractor.cs" />
     <Compile Include="INamespaceMetadataExtractor.cs" />
     <Compile Include="ITypeMetadataExtractor.cs" />
@@ -54,6 +58,9 @@
       <Project>{c92454fd-7923-4397-ad5d-2a2f2d8050c4}</Project>
       <Name>ObjectBrowser.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

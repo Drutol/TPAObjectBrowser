@@ -7,6 +7,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using ObjectBrowser.Models.Entities;
 using ObjectBrowser.Models.Enums;
+using ObjectBrowser.Shared.Extensions;
+using ObjectBrowser.Shared.Statics;
 
 namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
 {
@@ -17,7 +19,7 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
         public abstract TypeKind Kind { get; }
         public abstract string Name { get; }
         public abstract ICommand LoadChildrenCommand { get; }
-        public List<KeyValuePair<string,string>> Details { get; set; }
+        public List<KeyValuePair<string, string>> Details { get; set; }
 
         public bool IsExpanded
         {
@@ -47,7 +49,11 @@ namespace ObjectBrowser.Shared.ViewModels.ItemViewModels
                 case TypeKind.InterfaceType:
                     return new InterfaceNodeViewModel(metadata);
                 case TypeKind.ClassType:
-                    return new ClassNodeViewModel(metadata);
+                    using (var dependencyScope = ResourceLocator.ObtainScope())
+                    {
+                        return dependencyScope.ResolveWithParameter<ClassNodeViewModel, TypeMetadata>(metadata);
+                    }
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

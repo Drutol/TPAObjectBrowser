@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +10,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using ObjectBrowser.Interfaces;
 using ObjectBrowser.Models.Entities;
+using ObjectBrowser.Models.Enums;
 using ObjectBrowser.Shared.BL;
 using ObjectBrowser.Shared.ViewModels.ItemViewModels;
 using ObjectBrowser.TestAssembly.BusinesLogic;
@@ -46,6 +48,7 @@ namespace ObjectBrowser.Shared.ViewModels
             }
             catch (Exception e)
             {
+                _logger.Log($"Error during model creation:\n{e}",LogSeverity.Error);
                 await _messageBoxProvider.ShowMessageBoxOk("Error during assembly model creation", "Error");
             }
 
@@ -56,7 +59,12 @@ namespace ObjectBrowser.Shared.ViewModels
         {
             await Task.Run(() =>
             {
-                _metadata = _assemblyMetadataExtractor.Extract(asm,LimitToRootNamespace);
+                _logger.Log($"Starting loading assembly from Assembly object: {asm.FullName}", LogSeverity.Info);
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                _metadata = _assemblyMetadataExtractor.Extract(asm, LimitToRootNamespace);
+                stopwatch.Stop();
+                _logger.Log($"Finished loading from Assembly, took {stopwatch.ElapsedMilliseconds}ms", LogSeverity.Info);
                 LoadAssembly(_metadata);
             });
         }
@@ -132,7 +140,7 @@ namespace ObjectBrowser.Shared.ViewModels
                 }
                 catch (Exception e)
                 {
-
+                    _logger.Log($"Error while navigating to treeview {vm.Name} node:\n{e}", LogSeverity.Error);
                 }
             });
 
@@ -145,7 +153,7 @@ namespace ObjectBrowser.Shared.ViewModels
                 }
                 catch (Exception e)
                 {
-
+                    _logger.Log($"Error while navigating to listview {vm.Name} node:\n{e}", LogSeverity.Error);
                 }
 
             });
@@ -154,6 +162,7 @@ namespace ObjectBrowser.Shared.ViewModels
         {
             if (_metadata == null)
             {
+                _logger.Log("Attempted to save assembly before loading.", LogSeverity.Warning);
                 await _messageBoxProvider.ShowMessageBoxOk("You have to load assembly first in order to save it.",
                     "No loaded asembly.");
                 return;
@@ -172,7 +181,12 @@ namespace ObjectBrowser.Shared.ViewModels
             Loading = true;
             try
             {
+                var stopwatch = new Stopwatch();
+                _logger.Log("Starting loading assembly from storage plugin.", LogSeverity.Info);
+                stopwatch.Start();
                 _metadata = await _dataStorage.Retrieve();
+                stopwatch.Stop();
+                _logger.Log($"Finished loading from storage, took {stopwatch.ElapsedMilliseconds}ms", LogSeverity.Info);
                 Items = new List<NodeViewModelBase>
                 {
                     new AssemblyNodeViewModel(_metadata)
