@@ -22,6 +22,7 @@ namespace ObjectBrowser.Models.Entities
         {
             TypeHash = typeHash;
         }
+
         [DataMember]
         public string TypeName { get;  set; }
         [DataMember]

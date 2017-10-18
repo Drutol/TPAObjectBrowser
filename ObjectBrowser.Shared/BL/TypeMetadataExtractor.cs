@@ -23,7 +23,8 @@ namespace ObjectBrowser.Shared.BL
         {
             var typeData = new TypeMetadata(type.GetHashCode());
 
-            rootAssembly.RegisteredTypes.Add(typeData);
+            if(!rootAssembly.RegisteredTypes.Any(metadata => metadata.TypeHash == typeData.GetHashCode()))
+                rootAssembly.RegisteredTypes.Add(typeData);
 
             typeData.TypeName = type.Name;
             typeData.DeclaringType = EmitDeclaringType(type.DeclaringType, rootAssembly);

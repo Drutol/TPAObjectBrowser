@@ -31,4 +31,6 @@ namespace ObjectBrowser.Shared.BL
             yield return ("Params:", string.Join(",", data.Parameters.Select(metadata => $"{metadata.TypeMetadata.TypeName} {metadata.Name}")));
         }
     }
+
+ 
 }
